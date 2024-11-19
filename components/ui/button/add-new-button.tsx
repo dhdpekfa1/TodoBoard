@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../ui";
+import { Button } from "..";
 
 interface AddNewButtonProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;

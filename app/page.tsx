@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button, SearchBar } from "@/components/ui";
-import { AddNewButton } from "@/components/common";
+import { SearchBar } from "@/components/ui";
+import { AddNewButton } from "@/components/ui";
 
 export default function InitPage() {
   const router = useRouter();

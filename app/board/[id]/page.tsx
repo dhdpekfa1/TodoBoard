@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
-import { Button, Input, Progress, SearchBar } from "@/components/ui";
+import { Button, LabelDatePicker, Progress, SearchBar } from "@/components/ui";
+
 import styles from "./page.module.scss";
 
 const BoardPage = () => {
@@ -31,18 +34,27 @@ const BoardPage = () => {
         <div className={styles.header}>
           <div className={styles.header__top}>
             {/* 제목 input */}
-            <Input placeholder="Enter Title Here" />
+            <input
+              type="text"
+              placeholder="Enter Title Here"
+              className={styles.header__top__input}
+            />
             {/* 진행사항 그래프 */}
-            <div className="flex items-center justify-start gap-4">
+            <div className="flex items-center justify-start gap-4 mb-4">
               <small className="text-sm font-medium leading-none text-[#6d6d6d]">
                 1/10 Completed
               </small>
               <Progress className="w-60 h-3" />
             </div>
           </div>
-          <div>
-            {/*달력 */}
-            {/* button */}
+          <div className={styles.header__bottom}>
+            <div className="flex items-center gap-5">
+              <LabelDatePicker label={"From"} />
+              <LabelDatePicker label={"To"} />
+            </div>
+            <Button className="text-white bg-[#E79057] hover:bg-[#E26F24] hover:ring-1 hover:ring-[#E26F24] hover:ring-offset-1 active:bg-[#D5753D] hover:shadow-lg">
+              Add New Board
+            </Button>
           </div>
         </div>
         <div className={styles.body}></div>
