@@ -2,12 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { Button, SearchBar } from "@/components/ui";
+import { AddNewButton } from "@/components/common";
 
 export default function InitPage() {
   const router = useRouter();
 
-  const onAddClick = () => {
-    router.push("/board/1");
+  const onAddClick = (id: number) => {
+    router.push(`/board/${id}`);
   };
 
   return (
@@ -15,12 +16,8 @@ export default function InitPage() {
       {/* TODO: aside 컴포넌트 분리 */}
       <aside className="page__aside">
         <SearchBar placeholder="검색어를 입력하세요." />
-        <Button
-          className="text-[#e79057] bg-white border border-[#e79057] hover:bg-[#fff9f5]"
-          onClick={onAddClick}
-        >
-          Add New Page
-        </Button>
+        <AddNewButton onClick={() => onAddClick(1)} />
+        Add New Page
         <div className="flex flex-col mt-4 gap-2">
           <small className="text-sm font-medium leading-none text-[#a6a6a6]">
             {`Ollin's`}
@@ -51,12 +48,7 @@ export default function InitPage() {
               2. Add boards to page
             </small>
           </div>
-          <Button
-            className="text-[#e79057] bg-white border border-[#e79057] hover:bg-[#fff9f5] w-[156px]"
-            onClick={onAddClick}
-          >
-            Add New Page
-          </Button>
+          <AddNewButton onClick={() => onAddClick(1)} />
         </div>
       </main>
     </div>
