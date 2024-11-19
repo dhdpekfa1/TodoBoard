@@ -21,3 +21,15 @@ export {
 } from "@/components/ui/card/card";
 export { Separator } from "@/components/ui/separator/separator";
 export { Checkbox } from "@/components/ui/checkbox/checkbox";
+export {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog/dialog";
