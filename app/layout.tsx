@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import "@/app/styles/main.scss";
+import { Toaster } from "@/components/ui";
 
 const NOTO_SANS_KR = Noto_Sans_KR({
   subsets: ["latin"],
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${NOTO_SANS_KR.className}`}>{children}</body>
+      <body className={`${NOTO_SANS_KR.className}`}>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }

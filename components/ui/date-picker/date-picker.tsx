@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import {
@@ -12,14 +11,23 @@ import {
 } from "@/components/ui";
 import { Calendar as CalendarIcon } from "lucide-react";
 
-function BasicDatePicker() {
-  const [date, setDate] = useState<Date>();
+interface BasicDatePickerProps {
+  date: Date | undefined;
+  disabled?: boolean;
+  onDateChange: (date: Date | undefined) => void;
+}
 
+function BasicDatePicker({
+  date,
+  disabled,
+  onDateChange,
+}: BasicDatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
+          disabled={disabled}
           className={cn(
             "w-[280px] justify-start text-left font-normal",
             !date && "text-muted-foreground"
@@ -33,7 +41,7 @@ function BasicDatePicker() {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={onDateChange} // 날짜 선택 시 부모로 전달
           initialFocus
         />
       </PopoverContent>

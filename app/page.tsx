@@ -1,41 +1,39 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { SearchBar } from "@/components/ui";
 import { AddNewButtonOutline } from "@/components/ui";
+import { addPageApi } from "./api/page";
+import { useToast } from "@/hooks/use-toast";
+import PageList from "@/features/page-list/PageList";
 
 export default function InitPage() {
   const router = useRouter();
+  const { toast } = useToast();
 
-  const onAddClick = (id: number) => {
-    router.push(`/board/${id}`);
+  // Supabase Pages table에 새로운 TodoList 추가 TODO: 분리
+  const createPage = async () => {
+    const res = await addPageApi();
+    if (res) {
+      const id = res[0].id;
+
+      toast({
+        title: "새로운 Todo-List가 생성되었습니다.",
+        description: "나만의 Todo를 완성하세요!",
+      });
+      router.push(`/board/${id}`);
+    } else {
+      toast({
+        variant: "destructive",
+        title: "다시 시도해주세요.",
+        description: "Todo-List가 생성에 실패했습니다..",
+      });
+      return;
+    }
   };
 
   return (
     <div className="page">
-      {/* TODO: aside 컴포넌트 분리 */}
-      <aside className="page__aside">
-        <SearchBar placeholder="검색어를 입력하세요." />
-        <AddNewButtonOutline onClick={() => onAddClick(1)}>
-          Add New Page
-        </AddNewButtonOutline>
-        Add New Page
-        <div className="flex flex-col mt-4 gap-2">
-          <small className="text-sm font-medium leading-none text-[#a6a6a6]">
-            {`Ollin's`}
-          </small>
-          <ul className="flex flex-col">
-            <li className="flex items-center gap-2 py-2 px-[10px] bg-[#f5f5f5] rounded-sm text-sm">
-              <div className="bg-[#00f38d] w-2 h-2 rounded-full" />
-              Enter Title
-            </li>
-            <li className="flex items-center gap-2 py-2 px-[10px] bg-[#f5f5f5] rounded-sm text-sm">
-              <div className="bg-[#00f38d]  w-2 h-2 rounded-full" />
-              Enter Title
-            </li>
-          </ul>
-        </div>
-      </aside>
+      <PageList />
 
       <main className="page__main">
         <div className="flex flex-col items-center justify-center gap-5 mb-5 w-full h-full">
@@ -50,7 +48,7 @@ export default function InitPage() {
               2. Add boards to page
             </small>
           </div>
-          <AddNewButtonOutline onClick={() => onAddClick(1)}>
+          <AddNewButtonOutline onClick={createPage}>
             Add New Page
           </AddNewButtonOutline>
         </div>
