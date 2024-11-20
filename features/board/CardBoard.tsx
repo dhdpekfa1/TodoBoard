@@ -65,7 +65,10 @@ const CardBoard = ({ children }: CardBoardProps) => {
       {/* AddButton */}
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant={"ghost"} className="font-normal text-[#6D6D6D]">
+          <Button
+            variant={"ghost"}
+            className="w-full font-normal text-[#6D6D6D]"
+          >
             Add Contents
           </Button>
         </DialogTrigger>
@@ -73,7 +76,7 @@ const CardBoard = ({ children }: CardBoardProps) => {
           <DialogHeader>
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you're done.
+              Make changes to your profile here.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4"></div>
