@@ -86,3 +86,19 @@ export const updatePageApi = async (updatedBoard: PageDataType) => {
     return null;
   }
 };
+
+// 페이지 삭제
+export const deletePageApi = async (pageId: number): Promise<boolean> => {
+  try {
+    const { error } = await supabase.from("pages").delete().eq("id", pageId); // pageId로 특정 페이지 삭제
+
+    if (error) {
+      throw error;
+    }
+
+    return true; // 삭제 성공
+  } catch (err) {
+    console.error("Error in deletePageApi:", err);
+    return false; // 삭제 실패
+  }
+};

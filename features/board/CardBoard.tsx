@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import { ChevronUp } from "lucide-react";
+import { MarkdownEditorDialog } from "./MarkdownEditorDialog";
 import {
   Button,
   Card,
@@ -8,9 +10,9 @@ import {
   LabelDatePicker,
   Separator,
 } from "@/components/ui";
-import { ChevronUp } from "lucide-react";
-import { MarkdownEditorDialog } from "./MarkdownEditorDialog";
+import { useToast } from "@/hooks/use-toast";
 import { BoardDataType } from "@/app/types/board";
+import { deleteBoardApi } from "@/app/api/board";
 
 const CardBoard = ({
   data,
@@ -27,6 +29,7 @@ const CardBoard = ({
     data.endDate ? new Date(data.endDate) : undefined
   );
   const [isEditing, setIsEditing] = useState(false);
+  const { toast } = useToast();
 
   const onSave = () => {
     onUpdate({
@@ -36,6 +39,22 @@ const CardBoard = ({
       endDate: endDate?.toISOString() || "",
     });
     setIsEditing(false);
+  };
+
+  const onDelete = async (id: number) => {
+    const res = await deleteBoardApi(id);
+
+    if (!res) {
+      toast({
+        variant: "destructive",
+        title: "다시 시도해주세요.",
+        description: "보드 삭제에 실패했습니다.",
+      });
+      return;
+    }
+    toast({
+      title: "보드 삭제에 성공했습니다.",
+    });
   };
 
   return (
@@ -95,6 +114,7 @@ const CardBoard = ({
           <Button
             variant={"ghost"}
             className="font-normal text-rose-600 hover:text-rose-600 hover:bg-red-50"
+            onClick={() => onDelete(Number(data.boardId))}
           >
             삭제
           </Button>

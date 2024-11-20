@@ -1,4 +1,5 @@
-import { PageDataType } from "@/app/types/board";
+import React, { useEffect, useState } from "react";
+import { ChevronLeft } from "lucide-react";
 import {
   AddNewButtonFill,
   AddNewButtonOutline,
@@ -6,8 +7,9 @@ import {
   LabelDatePicker,
   Progress,
 } from "@/components/ui";
-import { ChevronLeft } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { deletePageApi } from "@/app/api/page";
+import { PageDataType } from "@/app/types/board";
 
 export interface PageDataWithoutId extends Omit<PageDataType, "id"> {}
 
@@ -26,10 +28,11 @@ const PageBoard = ({ data, onUpdate, createBoard }: PageBoardProps) => {
     data?.endDate ? new Date(data.endDate) : undefined
   );
   const [isEditing, setIsEditing] = useState(false);
+  const { toast } = useToast();
 
-  useEffect(() => {
-    console.log("PageBoard - data ==> ", data);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log("PageBoard - data ==> ", data);
+  // }, [data]);
 
   const onSave = () => {
     onUpdate({
@@ -41,8 +44,20 @@ const PageBoard = ({ data, onUpdate, createBoard }: PageBoardProps) => {
     setIsEditing(false);
   };
 
-  const onDelete = async () => {
-    console.log("TODO");
+  const onDelete = async (id: number) => {
+    const res = await deletePageApi(id);
+
+    if (!res) {
+      toast({
+        variant: "destructive",
+        title: "다시 시도해주세요.",
+        description: "페이지 삭제에 실패했습니다.",
+      });
+      return;
+    }
+    toast({
+      title: "페이지 삭제에 성공했습니다.",
+    });
   };
 
   return (
@@ -60,7 +75,7 @@ const PageBoard = ({ data, onUpdate, createBoard }: PageBoardProps) => {
         )}
         {isEditing && (
           <Button
-            onClick={onDelete}
+            onClick={() => onDelete(data.id)}
             className="font-normal bg-red-500 text-white hover:text-rose-600 hover:bg-red-50"
           >
             삭제

@@ -25,7 +25,7 @@ export default function InitPage() {
       toast({
         variant: "destructive",
         title: "다시 시도해주세요.",
-        description: "Todo-List가 생성에 실패했습니다..",
+        description: "Todo-List 생성에 실패했습니다.",
       });
       return;
     }

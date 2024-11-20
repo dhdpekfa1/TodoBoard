@@ -18,12 +18,12 @@ const BoardPage = () => {
   useEffect(() => {
     fetchPageData();
     fetchBoardData();
-    console.log(pageData);
+    // console.log(pageData);
   }, []);
 
-  useEffect(() => {
-    console.log("Page data updated:", pageData);
-  }, [pageData]);
+  // useEffect(() => {
+  //   console.log("Page data updated:", pageData);
+  // }, [pageData]);
 
   const fetchPageData = async () => {
     const res = await getPageApi(Number(pageId));
@@ -31,8 +31,8 @@ const BoardPage = () => {
       console.log("fetchBoardData :", res);
     }
     setPageData(res);
-    console.log("res", res);
-    console.log("pageData", pageData);
+    // console.log("res", res);
+    // console.log("pageData", pageData);
   };
 
   const fetchBoardData = async () => {

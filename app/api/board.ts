@@ -106,3 +106,19 @@ export const updateBoardsApi = async (
     return false;
   }
 };
+
+// 보드 삭제
+export const deleteBoardApi = async (boardId: number): Promise<boolean> => {
+  try {
+    const { error } = await supabase.from("boards").delete().eq("id", boardId);
+
+    if (error) {
+      throw error;
+    }
+
+    return true;
+  } catch (err) {
+    console.error("Error in deleteBoardApi:", err);
+    return false;
+  }
+};
