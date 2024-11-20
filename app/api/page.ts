@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { BoardDataType } from "../types/board";
+import { BoardDataType, PageDataType } from "../types/board";
 
 // 페이지 전체 조회
 export const getPageListApi = async () => {
@@ -59,22 +59,22 @@ export const addPageApi = async () => {
 };
 
 // 저장 버튼 클릭 -> page 업데이트
-export const updatePageApi = async (
-  id: number,
-  title: string,
-  startDate: Date | null,
-  endDate: Date | null
-) => {
+export const updatePageApi = async (updatedBoard: PageDataType) => {
   try {
     const { data, error } = await supabase
       .from("pages")
       .update({
-        title: title,
+        title: updatedBoard.title,
         start_date:
-          startDate instanceof Date ? startDate.toISOString() : startDate,
-        end_date: endDate instanceof Date ? endDate.toISOString() : endDate,
+          updatedBoard.startDate instanceof Date
+            ? updatedBoard.startDate.toISOString()
+            : updatedBoard.startDate,
+        end_date:
+          updatedBoard.endDate instanceof Date
+            ? updatedBoard.endDate.toISOString()
+            : updatedBoard.endDate,
       })
-      .eq("id", id);
+      .eq("id", updatedBoard.id);
 
     if (error) {
       throw error;
