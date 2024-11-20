@@ -1,28 +1,18 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import React from "react";
 import {
   Button,
   Card,
   Checkbox,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
   LabelDatePicker,
   Separator,
 } from "@/components/ui";
 
 import { ChevronUp } from "lucide-react";
+import { MarkdownEditorDialog } from "./MarkdownEditorDialog";
 
-interface CardBoardProps {
-  children?: ReactNode;
-}
-
-const CardBoard = ({ children }: CardBoardProps) => {
+const CardBoard = () => {
   return (
     <Card className="w-full flex flex-col items-center p-5">
       {/* Card Title */}
@@ -62,29 +52,15 @@ const CardBoard = ({ children }: CardBoardProps) => {
 
       <Separator className="my-3" />
 
-      {/* AddButton */}
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button
-            variant={"ghost"}
-            className="w-full font-normal text-[#6D6D6D]"
-          >
-            Add Contents
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
-            <DialogDescription>
-              Make changes to your profile here.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4"></div>
-          <DialogFooter>
-            <Button type="submit">Save changes</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* AddButton Click */}
+      <MarkdownEditorDialog>
+        <Button
+          variant={"ghost"}
+          className="w-full font-normal text-[rgb(109,109,109)]"
+        >
+          Add Contents
+        </Button>
+      </MarkdownEditorDialog>
     </Card>
   );
 };

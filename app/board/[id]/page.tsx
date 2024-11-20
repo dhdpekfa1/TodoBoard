@@ -1,7 +1,13 @@
 "use client";
 
 import React from "react";
-import { Button, LabelDatePicker, Progress, SearchBar } from "@/components/ui";
+import {
+  AddNewButtonFill,
+  Button,
+  LabelDatePicker,
+  Progress,
+  SearchBar,
+} from "@/components/ui";
 
 import { ChevronLeft } from "lucide-react";
 import { CardBoard } from "@/features/board";
@@ -62,9 +68,9 @@ const BoardPage = () => {
               <LabelDatePicker label={"From"} />
               <LabelDatePicker label={"To"} />
             </div>
-            <Button className="text-white bg-[#E79057] hover:bg-[#E26F24] hover:ring-1 hover:ring-[#E26F24] hover:ring-offset-1 active:bg-[#D5753D] hover:shadow-lg">
+            <AddNewButtonFill onClick={createBoard}>
               Add New Board
-            </Button>
+            </AddNewButtonFill>
           </div>
         </div>
         <div className={styles.body}>

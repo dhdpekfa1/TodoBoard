@@ -1,5 +1,6 @@
 export { Button, buttonVariants } from "@/components/ui/button/button";
-export { AddNewButton } from "@/components/ui/button/add-new-button";
+export { AddNewButtonOutline } from "@/components/ui/button/add-new-button-outline";
+export { AddNewButtonFill } from "@/components/ui/button/add-new-button-fill";
 export { Input } from "@/components/ui/input/input";
 export { SearchBar } from "@/components/ui/search-bar/search-bar";
 export { Progress } from "@/components/ui/progress/progress";
