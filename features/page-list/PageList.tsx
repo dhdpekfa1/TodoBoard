@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { addPageApi, getPageApi, getPageListApi } from "@/app/api/page";
 import { PageDataType } from "@/app/types/board";
-import { AddNewButtonOutline, SearchBar } from "@/components/ui";
+import { ButtonOutline, SearchBar } from "@/components/ui";
 
 const PageList = () => {
   const router = useRouter();
@@ -62,9 +62,7 @@ const PageList = () => {
   return (
     <aside className="page__aside">
       <SearchBar placeholder="검색어를 입력하세요." />
-      <AddNewButtonOutline onClick={createPage}>
-        Add New Page
-      </AddNewButtonOutline>
+      <ButtonOutline onClick={createPage}>Add New Page</ButtonOutline>
       <div className="flex flex-col mt-4 gap-2">
         <small className="text-sm font-medium leading-none text-[#a6a6a6]">
           {`Ollin's`}

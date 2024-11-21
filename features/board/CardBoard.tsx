@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { MarkdownEditorDialog } from "./MarkdownEditorDialog";
 import {
-  AddNewButtonOutline,
+  ButtonOutline,
   Button,
   Card,
   Checkbox,
@@ -195,9 +195,9 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
               저장
             </Button>
           ) : (
-            <AddNewButtonOutline onClick={() => setIsEditing(true)}>
+            <ButtonOutline onClick={() => setIsEditing(true)}>
               수정
-            </AddNewButtonOutline>
+            </ButtonOutline>
           )}
 
           <DeleteButton onClick={() => onDelete(Number(data.boardId))} />

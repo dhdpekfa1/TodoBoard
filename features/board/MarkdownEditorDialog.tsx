@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import { useToast } from "@/hooks/use-toast";
 import {
-  AddNewButtonFill,
+  ButtonFill,
   Button,
   Checkbox,
   Dialog,
@@ -112,10 +112,10 @@ const MarkdownEditorDialog = ({
           </DialogClose>
           {title && content ? (
             <DialogClose asChild>
-              <AddNewButtonFill onClick={onSave}>등록</AddNewButtonFill>
+              <ButtonFill onClick={onSave}>등록</ButtonFill>
             </DialogClose>
           ) : (
-            <AddNewButtonFill onClick={onSave}>등록</AddNewButtonFill>
+            <ButtonFill onClick={onSave}>등록</ButtonFill>
           )}
         </DialogFooter>
       </DialogContent>

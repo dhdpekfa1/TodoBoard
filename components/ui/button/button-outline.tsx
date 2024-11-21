@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "..";
 import { ButtonProps } from "@/app/types/common";
 
-const AddNewButtonOutline = ({ onClick, children }: ButtonProps) => {
+const ButtonOutline = ({ onClick, children }: ButtonProps) => {
   return (
     <Button
       onClick={onClick}
@@ -13,4 +13,4 @@ const AddNewButtonOutline = ({ onClick, children }: ButtonProps) => {
   );
 };
 
-export { AddNewButtonOutline };
+export { ButtonOutline };

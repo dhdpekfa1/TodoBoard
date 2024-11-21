@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "..";
 import { ButtonProps } from "@/app/types/common";
 
-const AddNewButtonFill = ({ onClick, children }: ButtonProps) => {
+const ButtonFill = ({ onClick, children }: ButtonProps) => {
   return (
     <Button
       onClick={onClick}
@@ -13,4 +13,4 @@ const AddNewButtonFill = ({ onClick, children }: ButtonProps) => {
   );
 };
 
-export { AddNewButtonFill };
+export { ButtonFill };

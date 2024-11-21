@@ -1,6 +1,6 @@
 export { Button, buttonVariants } from "@/components/ui/button/button";
-export { AddNewButtonOutline } from "@/components/ui/button/add-new-button-outline";
-export { AddNewButtonFill } from "@/components/ui/button/add-new-button-fill";
+export { ButtonOutline } from "@/components/ui/button/button-outline";
+export { ButtonFill } from "@/components/ui/button/button-fill";
 export { DeleteButton } from "@/components/ui/button/delete-button";
 export { Input } from "@/components/ui/input/input";
 export { SearchBar } from "@/components/ui/search-bar/search-bar";

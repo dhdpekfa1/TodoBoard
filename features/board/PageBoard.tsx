@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { ChevronLeft } from "lucide-react";
 import {
-  AddNewButtonFill,
-  AddNewButtonOutline,
+  ButtonFill,
+  ButtonOutline,
   Button,
   ConfirmDialog,
   LabelDatePicker,
@@ -121,11 +121,9 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
           <ChevronLeft />
         </Button>
         {isEditing ? (
-          <AddNewButtonOutline onClick={onSave}>저장</AddNewButtonOutline>
+          <ButtonOutline onClick={onSave}>저장</ButtonOutline>
         ) : (
-          <AddNewButtonOutline onClick={() => setIsEditing(true)}>
-            수정
-          </AddNewButtonOutline>
+          <ButtonOutline onClick={() => setIsEditing(true)}>수정</ButtonOutline>
         )}
         <ConfirmDialog onClick={() => onDelete(pageId)} />
       </div>
@@ -161,9 +159,7 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
             disabled={!isEditing}
             onChange={setEndDate}
           />
-          <AddNewButtonFill onClick={createBoard}>
-            Add New Board
-          </AddNewButtonFill>
+          <ButtonFill onClick={createBoard}>Add New Board</ButtonFill>
         </div>
       </div>
     </div>
