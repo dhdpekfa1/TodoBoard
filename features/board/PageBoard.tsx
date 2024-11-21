@@ -9,19 +9,19 @@ import {
   AddNewButtonOutline,
   Button,
   ConfirmDialog,
-  DeleteButton,
   LabelDatePicker,
   Progress,
 } from "@/components/ui";
 import { deletePageApi, getPageApi, updatePageApi } from "@/app/api/page";
-import { PageDataType } from "@/app/types/board";
+import { BoardDataType, PageDataType } from "@/app/types/board";
 
 interface PageBoardProps {
   pageId: number;
   createBoard: () => Promise<void>;
+  boardData: BoardDataType[];
 }
 
-const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
+const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
   const [title, setTitle] = useState("");
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
@@ -31,6 +31,7 @@ const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
 
   useEffect(() => {
     fetchPageData();
+    console.log("completedData", completedData);
   }, []);
 
   const fetchPageData = async () => {
@@ -103,6 +104,13 @@ const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
     router.push("/");
   };
 
+  // 완료된 보드 항목을 필터링
+  const completedData = boardData.filter((data) => data.isChecked);
+
+  // 진행도 계산
+  const completionPercentage =
+    boardData.length > 0 ? (completedData.length / boardData.length) * 100 : 0;
+
   return (
     <div className="w-full p-5 flex flex-col bg-white">
       <div className="flex items-center gap-2">
@@ -131,9 +139,9 @@ const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
         {/* 진행도 그래프 */}
         <div className="flex items-center gap-4 mb-4">
           <small className="text-sm font-medium text-gray-600">
-            TODO: 1/10 Completed
+            {completedData.length} / {boardData.length} Completed
           </small>
-          <Progress className="w-60 h-3" />
+          <Progress value={completionPercentage} className="w-60 h-3" />
         </div>
       </div>
       <div className="w-full flex items-center justify-between mt-5">

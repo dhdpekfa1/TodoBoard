@@ -64,7 +64,11 @@ const BoardPage = () => {
     <div className="page">
       <PageList />
       <main className="page__main">
-        <PageBoard createBoard={createBoard} pageId={Number(pageId)} />
+        <PageBoard
+          createBoard={createBoard}
+          pageId={Number(pageId)}
+          boardData={boardData}
+        />
         <div className={styles.body}>
           {!boardData.length ? (
             <div className={styles.body__noData}>
@@ -84,6 +88,7 @@ const BoardPage = () => {
                   key={data.boardId}
                   data={data}
                   onUpdate={updateBoard}
+                  fetchBoardData={fetchBoardData}
                 />
               ))}
             </div>

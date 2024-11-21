@@ -16,13 +16,13 @@ import { useToast } from "@/hooks/use-toast";
 import { BoardDataType } from "@/app/types/board";
 import { deleteBoardApi } from "@/app/api/board";
 
-const CardBoard = ({
-  data,
-  onUpdate,
-}: {
+interface CardBoardProps {
   data: BoardDataType;
   onUpdate: (updatedBoard: BoardDataType) => void;
-}) => {
+  fetchBoardData: () => void;
+}
+
+const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
   const [title, setTitle] = useState(data.title);
   const [startDate, setStartDate] = useState<Date | undefined>(
     data.startDate ? new Date(data.startDate) : undefined
@@ -30,6 +30,7 @@ const CardBoard = ({
   const [endDate, setEndDate] = useState<Date | undefined>(
     data.endDate ? new Date(data.endDate) : undefined
   );
+  const [isChecked, setIsChecked] = useState(data.isChecked || false);
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
 
@@ -39,6 +40,7 @@ const CardBoard = ({
       title,
       startDate: startDate?.toISOString() || "",
       endDate: endDate?.toISOString() || "",
+      isChecked,
     });
     setIsEditing(false);
   };
@@ -57,6 +59,14 @@ const CardBoard = ({
     toast({
       title: "보드 삭제에 성공했습니다.",
     });
+    fetchBoardData();
+  };
+
+  // 수정 모드일 때만 체크박스 상태 변경
+  const handleCheckboxChange = () => {
+    if (isEditing) {
+      setIsChecked((prevState) => !prevState);
+    }
   };
 
   return (
@@ -64,7 +74,13 @@ const CardBoard = ({
       {/* Card Title */}
       <div className="w-full flex items-center justify-between mb-5">
         <div className="flex items-center justify-start gap-2">
-          <Checkbox className="w-5 h-5" />
+          <Checkbox
+            id={String(data.boardId)}
+            className="w-5 h-5"
+            checked={isChecked}
+            // disabled={!isEditing}
+            onCheckedChange={handleCheckboxChange}
+          />
           <input
             type="text"
             placeholder="제목을 입력하세요."

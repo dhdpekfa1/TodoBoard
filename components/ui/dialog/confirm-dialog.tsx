@@ -16,7 +16,6 @@ import { ButtonProps } from "@/app/types/common";
 const ConfirmDialog = ({ onClick }: ButtonProps) => {
   return (
     <Dialog>
-      {/* <DialogTrigger>삭제</DialogTrigger> */}
       <DialogTrigger asChild>
         <Button
           variant="outline"
