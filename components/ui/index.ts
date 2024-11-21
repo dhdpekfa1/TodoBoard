@@ -35,6 +35,7 @@ export {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog/dialog";
+export { ConfirmDialog } from "@/components/ui/dialog/confirm-dialog";
 export {
   type ToastProps,
   type ToastActionElement,

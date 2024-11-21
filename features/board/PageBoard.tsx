@@ -8,6 +8,7 @@ import {
   AddNewButtonFill,
   AddNewButtonOutline,
   Button,
+  ConfirmDialog,
   DeleteButton,
   LabelDatePicker,
   Progress,
@@ -115,7 +116,7 @@ const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
             수정
           </AddNewButtonOutline>
         )}
-        <DeleteButton onClick={() => onDelete(pageId)} />
+        <ConfirmDialog onClick={() => onDelete(pageId)} />
       </div>
       <div className="w-full flex flex-col gap-4 mt-4">
         {/* 제목 input */}

@@ -6,8 +6,7 @@ const DeleteButton = ({ onClick }: ButtonProps) => {
   return (
     <Button
       onClick={onClick}
-      className=" text-rose-700  bg-rose-300  hover:text-rose-700 hover:bg-rose-400"
-      // border-[#e79057]
+      className=" text-rose-700  bg-rose-300  hover:text-rose-700 hover:bg-rose-400 border border-rose-500"
     >
       삭제
     </Button>
