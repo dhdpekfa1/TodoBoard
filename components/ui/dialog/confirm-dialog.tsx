@@ -36,7 +36,7 @@ const ConfirmDialog = ({ onClick }: ButtonProps) => {
           {/* 아웃라인 */}
           <DialogClose asChild>
             <Button type="button" variant="outline">
-              Close
+              취소
             </Button>
           </DialogClose>
           {/* 삭제버튼 */}
