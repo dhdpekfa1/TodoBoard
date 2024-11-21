@@ -9,6 +9,7 @@ const PageList = () => {
   const router = useRouter();
 
   const [pageData, setPageData] = useState<PageDataType[]>();
+  const [searchValue, setSearchValue] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -59,25 +60,40 @@ const PageList = () => {
     }
   };
 
+  // 검색어 필터 함수
+  const filteredPageData = pageData?.filter((data) =>
+    data.title.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
   return (
     <aside className="page__aside">
-      <SearchBar placeholder="검색어를 입력하세요." />
+      <SearchBar
+        placeholder="검색어를 입력하세요."
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
+      />
       <ButtonOutline onClick={createPage}>Add New Page</ButtonOutline>
       <div className="flex flex-col mt-4 gap-2">
         <small className="text-sm font-medium leading-none text-[#a6a6a6]">
           {`Ollin's`}
         </small>
         <ul className="flex flex-col">
-          {pageData?.map((data) => (
-            <li
-              key={data.id}
-              onClick={() => handlePageClick(data.id)}
-              className="flex items-center gap-2 py-2 px-[10px] bg-[#f5f5f5] rounded-sm text-sm cursor-pointer"
-            >
-              <div className="bg-[#00f38d] w-2 h-2 rounded-full" />
-              {data.title}
+          {filteredPageData && filteredPageData.length > 0 ? (
+            filteredPageData.map((data) => (
+              <li
+                key={data.id}
+                onClick={() => handlePageClick(data.id)}
+                className="flex items-center gap-2 py-2 px-[10px] bg-[#f5f5f5] rounded-sm text-sm cursor-pointer"
+              >
+                <div className="bg-[#00f38d] w-2 h-2 rounded-full" />
+                {data.title}
+              </li>
+            ))
+          ) : (
+            <li className="py-2 px-[10px] text-sm text-[#a6a6a6]">
+              No results found
             </li>
-          ))}
+          )}
         </ul>
       </div>
     </aside>

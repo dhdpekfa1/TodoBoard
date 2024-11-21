@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AddNewButtonOutline } from "@/components/ui";
+import { ButtonOutline } from "@/components/ui";
 import { addPageApi } from "./api/page";
 import { useToast } from "@/hooks/use-toast";
 import PageList from "@/features/page-list/PageList";
@@ -48,9 +48,7 @@ export default function InitPage() {
               2. Add boards to page
             </small>
           </div>
-          <AddNewButtonOutline onClick={createPage}>
-            Add New Page
-          </AddNewButtonOutline>
+          <ButtonOutline onClick={createPage}>Add New Page</ButtonOutline>
         </div>
       </main>
     </div>
