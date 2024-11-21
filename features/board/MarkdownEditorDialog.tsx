@@ -30,31 +30,44 @@ const MarkdownEditorDialog = ({
 }: MarkdownEditorDialogProp) => {
   const [content, setContent] = useState(data?.content || "");
   const [title, setTitle] = useState(data?.title || "");
+  const [isChecked, setIsChecked] = useState(data?.isChecked || false);
   const { toast } = useToast();
 
   useEffect(() => {
     if (data) {
       setTitle(data.title);
       setContent(data.content);
+      setIsChecked(data.isChecked || false);
     }
   }, [data]);
 
   const onSave = () => {
-    if (!data?.title) {
-      toast({
-        variant: "destructive",
-        title: "필수 항목을 모두 입력하세요.",
-        description: "제목과 내용을 입력해 주세요.",
-      });
-      return;
-    }
+    try {
+      if (!title || !content) {
+        toast({
+          variant: "destructive",
+          title: "필수 항목을 모두 입력하세요.",
+          description: "제목과 내용을 입력해 주세요.",
+        });
+        console.log("title", title);
+        console.log("check");
+        return;
+      }
 
-    onUpdate({
-      ...data,
-      title,
-      content,
-      isChecked: data?.isChecked || false,
-    });
+      if (!data) {
+        console.error("data is undefined");
+        return;
+      }
+
+      onUpdate({
+        ...data,
+        title,
+        content,
+        isChecked,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -64,7 +77,12 @@ const MarkdownEditorDialog = ({
         <DialogHeader className="flex flex-col">
           <DialogTitle>
             <div className="flex items-center justify-start gap-2">
-              <Checkbox className="w-5 h-5 min-w-5" />
+              <Checkbox
+                id={String(data?.contentId)}
+                checked={isChecked}
+                onCheckedChange={() => setIsChecked((prevState) => !prevState)}
+                className="w-5 h-5 min-w-5"
+              />
               <input
                 type="text"
                 placeholder="게시물의 제목을 입력하세요."
@@ -81,7 +99,11 @@ const MarkdownEditorDialog = ({
         <Separator />
         <MarkdownEditor
           className="h-[320px]"
-          value={content}
+          value={
+            typeof data?.content === "string"
+              ? data?.content
+              : JSON.stringify(data?.content)
+          }
           onChange={(value, viewUpdate) => setContent(value)}
         />
         <DialogFooter>

@@ -7,11 +7,13 @@ import { CardBoard, PageBoard } from "@/features/board";
 import PageList from "@/features/page-list/PageList";
 import { BoardDataType } from "@/app/types/board";
 import { addBoardApi, getBoardApi, updateBoardsApi } from "@/app/api/board";
+import { useToast } from "@/hooks/use-toast";
 
 const BoardPage = () => {
   const params = useParams();
   const pageId = params?.id;
   const [boardData, setBoardData] = useState<BoardDataType[]>([]);
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchBoardData();
@@ -21,7 +23,11 @@ const BoardPage = () => {
     const res = await getBoardApi(Number(pageId));
 
     if (!res) {
-      console.log("fetchBoardData :", res);
+      toast({
+        variant: "destructive",
+        title: "보드 정보를 불러오지 못했습니다.",
+        description: "네트워크를 확인해주세요.",
+      });
     }
     setBoardData(res);
   };

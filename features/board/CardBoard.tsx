@@ -47,20 +47,35 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
 
   useEffect(() => {
     fetchContentData();
-    console.log("contentData", contentData);
   }, []);
 
   const fetchContentData = async () => {
     const res = await getContentApi(Number(data.boardId));
 
-    if (!res) {
-      console.log("fetchContentData 실패", res);
+    if (res && res.length > 0 && res[0]?.id) {
+      setContentData({
+        contentId: res[0].id,
+        title: res[0].title,
+        content: res[0].content,
+        isChecked: res[0].is_checked,
+      });
+    } else {
+      setContentData({
+        contentId: "",
+        title: "",
+        content: "",
+        isChecked: false,
+      });
     }
-    console.log("fetchContentData", res);
   };
 
   // boardContent 생성
   const createContent = async () => {
+    if (contentData && contentData.contentId) {
+      return;
+    }
+
+    // 콘텐츠 생성
     const newContent = await addContentApi(Number(data.boardId));
     if (!newContent) {
       console.error("Failed to create content.");
@@ -68,7 +83,6 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
     }
 
     setContentData(newContent);
-    console.log("newContent", newContent);
   };
 
   // boardContent 등록(수정)

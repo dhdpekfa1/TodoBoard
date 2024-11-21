@@ -36,7 +36,11 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
   const fetchPageData = async () => {
     const res = await getPageApi(Number(pageId));
     if (!res) {
-      console.log("fetchBoardData :", res);
+      toast({
+        variant: "destructive",
+        title: "페이지 정보를 불러오지 못했습니다.",
+        description: "네트워크를 확인해주세요.",
+      });
     }
 
     const { start_date, end_date, title } = res;
