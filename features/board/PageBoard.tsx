@@ -4,6 +4,7 @@ import {
   AddNewButtonFill,
   AddNewButtonOutline,
   Button,
+  DeleteButton,
   LabelDatePicker,
   Progress,
 } from "@/components/ui";
@@ -101,20 +102,13 @@ const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
           <ChevronLeft />
         </Button>
         {isEditing ? (
-          <AddNewButtonFill onClick={onSave}>저장</AddNewButtonFill>
+          <AddNewButtonOutline onClick={onSave}>저장</AddNewButtonOutline>
         ) : (
           <AddNewButtonOutline onClick={() => setIsEditing(true)}>
             수정
           </AddNewButtonOutline>
         )}
-        {isEditing && (
-          <Button
-            onClick={() => onDelete(pageId)}
-            className="font-normal bg-red-500 text-white hover:text-rose-600 hover:bg-red-50"
-          >
-            삭제
-          </Button>
-        )}
+        {isEditing && <DeleteButton onClick={() => onDelete(pageId)} />}
       </div>
       <div className="w-full flex flex-col gap-4 mt-4">
         {/* 제목 input */}

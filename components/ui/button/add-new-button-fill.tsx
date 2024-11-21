@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "..";
-import { AddNewButtonProps } from "@/app/types/common";
+import { ButtonProps } from "@/app/types/common";
 
-const AddNewButtonFill = ({ onClick, children }: AddNewButtonProps) => {
+const AddNewButtonFill = ({ onClick, children }: ButtonProps) => {
   return (
     <Button
       onClick={onClick}

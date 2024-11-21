@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "..";
-import { AddNewButtonProps } from "@/app/types/common";
+import { ButtonProps } from "@/app/types/common";
 
-const AddNewButtonOutline = ({ onClick, children }: AddNewButtonProps) => {
+const AddNewButtonOutline = ({ onClick, children }: ButtonProps) => {
   return (
     <Button
       onClick={onClick}
