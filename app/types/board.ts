@@ -3,7 +3,6 @@ export interface PageDataType {
   title: string;
   startDate: Date | string;
   endDate: Date | string;
-  boardData: BoardDataType[];
 }
 export interface BoardDataType {
   boardId: string | number;

@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { CardBoard, PageBoard } from "@/features/board";
 import styles from "./page.module.scss";
-import { BoardDataType, PageDataType } from "@/app/types/board";
-import { getPageApi, updatePageApi } from "@/app/api/page";
+import { BoardDataType } from "@/app/types/board";
 import { addBoardApi, getBoardApi, updateBoardsApi } from "@/app/api/board";
 import PageList from "@/features/page-list/PageList";
 
@@ -13,27 +12,10 @@ const BoardPage = () => {
   const params = useParams();
   const pageId = params?.id;
   const [boardData, setBoardData] = useState<BoardDataType[]>([]);
-  const [pageData, setPageData] = useState<PageDataType[]>([]);
 
   useEffect(() => {
-    fetchPageData();
     fetchBoardData();
-    // console.log(pageData);
   }, []);
-
-  // useEffect(() => {
-  //   console.log("Page data updated:", pageData);
-  // }, [pageData]);
-
-  const fetchPageData = async () => {
-    const res = await getPageApi(Number(pageId));
-    if (!res) {
-      console.log("fetchBoardData :", res);
-    }
-    setPageData(res);
-    // console.log("res", res);
-    // console.log("pageData", pageData);
-  };
 
   const fetchBoardData = async () => {
     const res = await getBoardApi(Number(pageId));
@@ -67,42 +49,22 @@ const BoardPage = () => {
     );
   };
 
-  // TODO: 에러 확인
-  const updatePage = async (updatedPage: PageDataType) => {
-    const res = await updatePageApi(updatedPage);
-    if (!res) {
-      console.error("Failed to update page.", res);
-      return;
-    }
-
-    setPageData((prevState) => ({
-      ...prevState,
-      title: updatedPage.title,
-      startDate: updatedPage.startDate,
-      endDate: updatedPage.endDate,
-    }));
-  };
-
   // 날짜 핸들러 함수
-  const handleDateChange = (
-    name: keyof PageDataType,
-    value: Date | undefined
-  ) => {
-    setPageData((prevState) => ({
-      ...prevState,
-      [name]: value || new Date(),
-    }));
-  };
+  // const handleDateChange = (
+  //   name: keyof PageDataType,
+  //   value: Date | undefined
+  // ) => {
+  //   setPageData((prevState) => ({
+  //     ...prevState,
+  //     [name]: value || new Date(),
+  //   }));
+  // };
 
   return (
     <div className="page">
       <PageList />
       <main className="page__main">
-        <PageBoard
-          data={pageData[0]}
-          onUpdate={updatePage}
-          createBoard={createBoard}
-        />
+        <PageBoard createBoard={createBoard} pageId={Number(pageId)} />
         <div className={styles.body}>
           {!boardData.length ? (
             <div className={styles.body__noData}>
