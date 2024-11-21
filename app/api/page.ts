@@ -96,9 +96,9 @@ export const deletePageApi = async (pageId: number): Promise<boolean> => {
       throw error;
     }
 
-    return true; // 삭제 성공
+    return true;
   } catch (err) {
     console.error("Error in deletePageApi:", err);
-    return false; // 삭제 실패
+    return false;
   }
 };

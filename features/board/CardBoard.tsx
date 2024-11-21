@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { MarkdownEditorDialog } from "./MarkdownEditorDialog";
 import {
+  AddNewButtonOutline,
   Button,
   Card,
   Checkbox,
+  DeleteButton,
   LabelDatePicker,
   Separator,
 } from "@/components/ui";
@@ -93,7 +95,7 @@ const CardBoard = ({
             onChange={setEndDate}
           />
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
           {isEditing ? (
             <Button
               variant={"ghost"}
@@ -103,21 +105,12 @@ const CardBoard = ({
               저장
             </Button>
           ) : (
-            <Button
-              variant={"ghost"}
-              className="text-[#6d6d6d] font-normal"
-              onClick={() => setIsEditing(true)}
-            >
+            <AddNewButtonOutline onClick={() => setIsEditing(true)}>
               수정
-            </Button>
+            </AddNewButtonOutline>
           )}
-          <Button
-            variant={"ghost"}
-            className="font-normal text-rose-600 hover:text-rose-600 hover:bg-red-50"
-            onClick={() => onDelete(Number(data.boardId))}
-          >
-            삭제
-          </Button>
+
+          <DeleteButton onClick={() => onDelete(Number(data.boardId))} />
         </div>
       </div>
 

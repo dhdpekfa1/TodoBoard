@@ -1,4 +1,8 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 import { ChevronLeft } from "lucide-react";
 import {
   AddNewButtonFill,
@@ -8,7 +12,6 @@ import {
   LabelDatePicker,
   Progress,
 } from "@/components/ui";
-import { useToast } from "@/hooks/use-toast";
 import { deletePageApi, getPageApi, updatePageApi } from "@/app/api/page";
 import { PageDataType } from "@/app/types/board";
 
@@ -23,6 +26,7 @@ const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
   const [endDate, setEndDate] = useState<Date | undefined>();
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   useEffect(() => {
     fetchPageData();
@@ -89,9 +93,13 @@ const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
       });
       return;
     }
+
     toast({
       title: "페이지 삭제에 성공했습니다.",
     });
+
+    // 페이지 삭제 후 리디렉션
+    router.push("/");
   };
 
   return (
@@ -107,7 +115,7 @@ const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
             수정
           </AddNewButtonOutline>
         )}
-        {isEditing && <DeleteButton onClick={() => onDelete(pageId)} />}
+        <DeleteButton onClick={() => onDelete(pageId)} />
       </div>
       <div className="w-full flex flex-col gap-4 mt-4">
         {/* 제목 input */}
