@@ -84,7 +84,7 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
           <input
             type="text"
             placeholder="제목을 입력하세요."
-            className="text-xl outline-none"
+            className="text-xl outline-none bg-white"
             disabled={!isEditing}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
