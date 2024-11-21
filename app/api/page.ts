@@ -58,7 +58,7 @@ export const addPageApi = async () => {
   }
 };
 
-// 저장 버튼 클릭 -> page 업데이트
+// 저장 버튼 클릭 -> 페이지 수정(업데이트)
 export const updatePageApi = async (updatedBoard: PageDataType) => {
   try {
     const { data, error } = await supabase
@@ -80,17 +80,17 @@ export const updatePageApi = async (updatedBoard: PageDataType) => {
       throw error;
     }
 
-    return data;
+    return true;
   } catch (err) {
     console.error("Error in updatePageApi:", err);
-    return null;
+    return false;
   }
 };
 
 // 페이지 삭제
 export const deletePageApi = async (pageId: number): Promise<boolean> => {
   try {
-    const { error } = await supabase.from("pages").delete().eq("id", pageId); // pageId로 특정 페이지 삭제
+    const { error } = await supabase.from("pages").delete().eq("id", pageId);
 
     if (error) {
       throw error;

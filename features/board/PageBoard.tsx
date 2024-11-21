@@ -51,8 +51,7 @@ const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
       return;
     }
 
-    // TODO: 오류 확인
-    // 페이지 데이터 업데이트
+    // 페이지 데이터 수정
     const updatedPage: PageDataType = {
       id: pageId,
       title,
@@ -114,7 +113,7 @@ const PageBoard = ({ pageId, createBoard }: PageBoardProps) => {
         {/* 제목 input */}
         <input
           type="text"
-          placeholder="Enter Title Here"
+          placeholder="페이지 제목을 입력해주세요."
           disabled={!isEditing}
           className="text-2xl font-bold outline-none bg-white placeholder:text-gray-400"
           value={title}
