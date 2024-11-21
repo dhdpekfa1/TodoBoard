@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { CardBoard, PageBoard } from "@/features/board";
 import styles from "./page.module.scss";
+import { CardBoard, PageBoard } from "@/features/board";
+import PageList from "@/features/page-list/PageList";
 import { BoardDataType } from "@/app/types/board";
 import { addBoardApi, getBoardApi, updateBoardsApi } from "@/app/api/board";
-import PageList from "@/features/page-list/PageList";
 
 const BoardPage = () => {
   const params = useParams();

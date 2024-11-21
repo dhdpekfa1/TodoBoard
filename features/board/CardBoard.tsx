@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { MarkdownEditorDialog } from "./MarkdownEditorDialog";
 import {
@@ -13,8 +13,13 @@ import {
   Separator,
 } from "@/components/ui";
 import { useToast } from "@/hooks/use-toast";
-import { BoardDataType } from "@/app/types/board";
+import { BoardContentType, BoardDataType } from "@/app/types/board";
 import { deleteBoardApi } from "@/app/api/board";
+import {
+  addContentApi,
+  getContentApi,
+  updateContentApi,
+} from "@/app/api/board_content";
 
 interface CardBoardProps {
   data: BoardDataType;
@@ -30,11 +35,68 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
   const [endDate, setEndDate] = useState<Date | undefined>(
     data.endDate ? new Date(data.endDate) : undefined
   );
+  const [contentData, setContentData] = useState<BoardContentType>({
+    contentId: "",
+    title: "",
+    content: "",
+    isChecked: false,
+  });
   const [isChecked, setIsChecked] = useState(data.isChecked || false);
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
 
+  useEffect(() => {
+    fetchContentData();
+    console.log("contentData", contentData);
+  }, []);
+
+  const fetchContentData = async () => {
+    const res = await getContentApi(Number(data.boardId));
+
+    if (!res) {
+      console.log("fetchContentData 실패", res);
+    }
+    console.log("fetchContentData", res);
+  };
+
+  // boardContent 생성
+  const createContent = async () => {
+    const newContent = await addContentApi(Number(data.boardId));
+    if (!newContent) {
+      console.error("Failed to create content.");
+      return;
+    }
+
+    setContentData(newContent);
+    console.log("newContent", newContent);
+  };
+
+  // boardContent 등록(수정)
+  const updateContent = async (updateContent: BoardContentType) => {
+    const res = await updateContentApi(updateContent);
+
+    if (!res) {
+      console.error("Failed to update content.", res);
+      return;
+    }
+
+    setContentData({
+      ...contentData,
+      title: updateContent.title,
+      content: updateContent.content,
+      isChecked: updateContent.isChecked,
+    });
+  };
+
   const onSave = () => {
+    if (!title || !startDate || !endDate) {
+      toast({
+        variant: "destructive",
+        title: "필수 항목을 모두 입력하세요.",
+        description: "제목, 시작일, 종료일을 입력해 주세요.",
+      });
+      return;
+    }
     onUpdate({
       ...data,
       title,
@@ -78,7 +140,6 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
             id={String(data.boardId)}
             className="w-5 h-5"
             checked={isChecked}
-            // disabled={!isEditing}
             onCheckedChange={handleCheckboxChange}
           />
           <input
@@ -133,10 +194,11 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
       <Separator className="my-3" />
 
       {/* Add Content Button */}
-      <MarkdownEditorDialog>
+      <MarkdownEditorDialog data={contentData} onUpdate={updateContent}>
         <Button
           variant={"ghost"}
           className="w-full font-normal text-[rgb(109,109,109)]"
+          onClick={createContent}
         >
           Add Contents
         </Button>

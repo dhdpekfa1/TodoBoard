@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import MarkdownEditor from "@uiw/react-markdown-editor";
-
+import { useToast } from "@/hooks/use-toast";
 import {
   AddNewButtonFill,
   Button,
@@ -13,15 +13,50 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  LabelDatePicker,
   Separator,
 } from "@/components/ui";
+import { BoardContentType } from "@/app/types/board";
 
 export interface MarkdownEditorDialogProp {
   children: ReactNode;
+  data: BoardContentType | undefined;
+  onUpdate: (updatedBoard: BoardContentType) => void;
 }
 
-const MarkdownEditorDialog = ({ children }: MarkdownEditorDialogProp) => {
+const MarkdownEditorDialog = ({
+  children,
+  data,
+  onUpdate,
+}: MarkdownEditorDialogProp) => {
+  const [content, setContent] = useState(data?.content || "");
+  const [title, setTitle] = useState(data?.title || "");
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (data) {
+      setTitle(data.title);
+      setContent(data.content);
+    }
+  }, [data]);
+
+  const onSave = () => {
+    if (!data?.title) {
+      toast({
+        variant: "destructive",
+        title: "필수 항목을 모두 입력하세요.",
+        description: "제목과 내용을 입력해 주세요.",
+      });
+      return;
+    }
+
+    onUpdate({
+      ...data,
+      title,
+      content,
+      isChecked: data?.isChecked || false,
+    });
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -34,6 +69,8 @@ const MarkdownEditorDialog = ({ children }: MarkdownEditorDialogProp) => {
                 type="text"
                 placeholder="게시물의 제목을 입력하세요."
                 className="text-xl outline-none"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </div>
           </DialogTitle>
@@ -41,21 +78,19 @@ const MarkdownEditorDialog = ({ children }: MarkdownEditorDialogProp) => {
             마크다운 에디터를 사용해 Todo Board를 꾸며보세요.
           </DialogDescription>
         </DialogHeader>
-        {/* Calender */}
-        <div className="flex items-center gap-5">
-          <LabelDatePicker label={"From"} />
-          <LabelDatePicker label={"To"} />
-        </div>
         <Separator />
-        {/* MarkdownEditor */}
-        <MarkdownEditor className="h-[320px]" />
+        <MarkdownEditor
+          className="h-[320px]"
+          value={content}
+          onChange={(value, viewUpdate) => setContent(value)}
+        />
         <DialogFooter>
           <DialogClose asChild>
             <Button type="submit" variant={"outline"}>
               취소
             </Button>
           </DialogClose>
-          <AddNewButtonFill onClick={() => {}}>등록</AddNewButtonFill>
+          <AddNewButtonFill onClick={onSave}>등록</AddNewButtonFill>
         </DialogFooter>
       </DialogContent>
     </Dialog>

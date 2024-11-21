@@ -12,3 +12,10 @@ export interface BoardDataType {
   endDate: Date | string;
   content: string;
 }
+
+export interface BoardContentType {
+  contentId: string | number;
+  title: string;
+  isChecked?: boolean;
+  content: string;
+}

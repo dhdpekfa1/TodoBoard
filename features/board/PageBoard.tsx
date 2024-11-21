@@ -31,7 +31,6 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
 
   useEffect(() => {
     fetchPageData();
-    console.log("completedData", completedData);
   }, []);
 
   const fetchPageData = async () => {
@@ -114,7 +113,7 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
   return (
     <div className="w-full p-5 flex flex-col bg-white">
       <div className="flex items-center gap-2">
-        <Button variant={"outline"}>
+        <Button variant={"outline"} onClick={() => router.back()}>
           <ChevronLeft />
         </Button>
         {isEditing ? (

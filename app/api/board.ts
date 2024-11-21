@@ -73,7 +73,7 @@ export const addBoardApi = async (
   }
 };
 
-// // 보드 업데이트
+// 보드 업데이트
 export const updateBoardsApi = async (
   updatedBoard: BoardDataType
 ): Promise<boolean> => {
