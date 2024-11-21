@@ -49,8 +49,6 @@ const MarkdownEditorDialog = ({
           title: "필수 항목을 모두 입력하세요.",
           description: "제목과 내용을 입력해 주세요.",
         });
-        console.log("title", title);
-        console.log("check");
         return;
       }
 
@@ -112,7 +110,13 @@ const MarkdownEditorDialog = ({
               취소
             </Button>
           </DialogClose>
-          <AddNewButtonFill onClick={onSave}>등록</AddNewButtonFill>
+          {title && content ? (
+            <DialogClose asChild>
+              <AddNewButtonFill onClick={onSave}>등록</AddNewButtonFill>
+            </DialogClose>
+          ) : (
+            <AddNewButtonFill onClick={onSave}>등록</AddNewButtonFill>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

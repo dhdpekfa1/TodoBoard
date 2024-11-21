@@ -75,7 +75,6 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
       return;
     }
 
-    // 콘텐츠 생성
     const newContent = await addContentApi(Number(data.boardId));
     if (!newContent) {
       console.error("Failed to create content.");
@@ -214,7 +213,7 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
           className="w-full font-normal text-[rgb(109,109,109)]"
           onClick={createContent}
         >
-          Add Contents
+          {contentData.contentId ? "Check Content" : "Add Contents"}
         </Button>
       </MarkdownEditorDialog>
     </Card>
