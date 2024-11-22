@@ -20,6 +20,7 @@ import {
   updateContentApi,
 } from "@/app/api/board_content";
 import { DateRangePicker } from "@/components/common";
+import { MarkdownComponent } from "./";
 
 interface CardBoardProps {
   data: BoardDataType;
@@ -197,16 +198,23 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
         </div>
       </div>
 
-      <Separator className="my-3" />
+      {/* TODO: 마크다운 화면 표시 확인 및 UI 구성 */}
+      {contentData.contentId && (
+        <>
+          <Separator className="my-3" />
+          <MarkdownComponent content={contentData.content} />
+        </>
+      )}
 
-      {/* Add Content Button */}
+      <Separator className="my-3" />
+      {/* Add & Edit Content Button */}
       <MarkdownEditorDialog data={contentData} onUpdate={updateContent}>
         <Button
           variant={"ghost"}
           className="w-full font-normal text-[rgb(109,109,109)]"
           onClick={createContent}
         >
-          {contentData.contentId ? "Check Content" : "Add Contents"}
+          {contentData.contentId ? "Edit Content" : "Add Contents"}
         </Button>
       </MarkdownEditorDialog>
     </Card>
