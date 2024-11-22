@@ -9,7 +9,6 @@ import {
   Card,
   Checkbox,
   DeleteButton,
-  LabelDatePicker,
   Separator,
 } from "@/components/ui";
 import { useToast } from "@/hooks/use-toast";
@@ -20,6 +19,7 @@ import {
   getContentApi,
   updateContentApi,
 } from "@/app/api/board_content";
+import { DateRangePicker } from "@/components/common";
 
 interface CardBoardProps {
   data: BoardDataType;
@@ -171,20 +171,13 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
 
       {/* Calendar & ButtonBox */}
       <div className="w-full flex items-center justify-between">
-        <div className="flex items-center gap-5">
-          <LabelDatePicker
-            label={"From"}
-            value={startDate}
-            disabled={!isEditing}
-            onChange={setStartDate}
-          />
-          <LabelDatePicker
-            label={"To"}
-            value={endDate}
-            disabled={!isEditing}
-            onChange={setEndDate}
-          />
-        </div>
+        <DateRangePicker
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          isEditing={isEditing}
+        />
         <div className="flex items-center gap-2">
           {isEditing ? (
             <Button

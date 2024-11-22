@@ -9,11 +9,11 @@ import {
   ButtonOutline,
   Button,
   ConfirmDialog,
-  LabelDatePicker,
   Progress,
 } from "@/components/ui";
 import { deletePageApi, getPageApi, updatePageApi } from "@/app/api/page";
 import { BoardDataType, PageDataType } from "@/app/types/board";
+import { DateRangePicker } from "@/components/common";
 
 interface PageBoardProps {
   pageId: number;
@@ -147,17 +147,12 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
       </div>
       <div className="w-full flex items-center justify-between mt-5">
         <div className="flex items-center gap-5">
-          <LabelDatePicker
-            label="From"
-            value={startDate}
-            disabled={!isEditing}
-            onChange={setStartDate}
-          />
-          <LabelDatePicker
-            label="To"
-            value={endDate}
-            disabled={!isEditing}
-            onChange={setEndDate}
+          <DateRangePicker
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            isEditing={isEditing}
           />
           <ButtonFill onClick={createBoard}>Add New Board</ButtonFill>
         </div>
