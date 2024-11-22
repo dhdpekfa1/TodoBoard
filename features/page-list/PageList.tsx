@@ -77,13 +77,13 @@ const PageList = () => {
         <small className="text-sm font-medium leading-none text-[#a6a6a6]">
           {`Ollin's`}
         </small>
-        <ul className="flex flex-col">
+        <ul className="flex flex-col gap-1">
           {filteredPageData && filteredPageData.length > 0 ? (
             filteredPageData.map((data) => (
               <li
                 key={data.id}
                 onClick={() => handlePageClick(data.id)}
-                className="flex items-center gap-2 py-2 px-[10px] bg-[#f5f5f5] rounded-sm text-sm cursor-pointer"
+                className="flex items-center gap-2 py-2 px-[10px] bg-[#f5f5f5] text-sm cursor-pointer"
               >
                 <div className="bg-[#00f38d] w-2 h-2 rounded-full" />
                 {data.title && data.title.length > 12
