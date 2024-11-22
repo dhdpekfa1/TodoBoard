@@ -33,6 +33,7 @@
   &__main {
     width: calc(100% - 282px);
     height: 100%;
+    min-width: 1000px;
 
     background-color: #f9f9f9;
     border-right: 1px solid #efefef;
