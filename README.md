@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Next.js와 Supabase를 활용한 일정관리(TASK 관리) 웹 어플리케이션 프로젝트
 
-## Getting Started
+> ## 프로젝트 설명
+>
+> 이 프로젝트는 Todo-List 웹 애플리케이션을 구현한 것입니다. 사용자는 여러 페이지를 생성하고 각 페이지에 관련된 보드 및 콘텐츠를 관리할 수 있습니다. 각 페이지는 여러 개의 보드를 포함하며, 각 보드에는 할 일 목록, 내용, 체크박스 등의 데이터가 포함될 수 있습니다. 사용자는 보드를 생성, 수정, 삭제하며, 보드와 관련된 콘텐츠를 관리할 수 있습니다.
 
-First, run the development server:
+<br>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+> ### 기술 스택
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Frontend:
+- React: 사용자 인터페이스를 구성하기 위한 라이브러리
+- Next.js: SSR(서버 사이드 렌더링) 및 라우팅을 위한 프레임워크
+- Tailwind CSS: 유틸리티 클래스 기반의 CSS 프레임워크
+- Supabase: 백엔드 관리 및 데이터베이스 관리
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<br>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+> ### 프로젝트 구조
 
-## Learn More
+- `/components`: UI 컴포넌트 폴더
+  - `ui`/: 공통 UI 요소 (버튼, 입력창 등)
+  - `MarkdownEditorDialog.tsx`: 마크다운 에디터 다이얼로그 컴포넌트
+- `/app/api/`: 데이터 API 함수들
+  - `page.ts`: 페이지 데이터 관련 API
+  - `board.ts`: 보드 관련 API
+  - `board_content.ts`: 보드 콘텐츠 관련 API
+- `/app/types/board.ts`: 타입 정의
+  - `BoardDataType`: 전체적인 보드 데이터 타입
+  - `BoardContentType`: 보드 콘텐츠 데이터 타입
 
-To learn more about Next.js, take a look at the following resources:
+<br>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> ### 주요 기능
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. 페이지 관리:
 
-## Deploy on Vercel
+   - 여러 페이지를 생성하고 관리할 수 있습니다.
+   - 각 페이지는 여러 개의 보드를 포함합니다.
+   - 페이지를 생성하고, 각 페이지에 해당하는 보드를 관리할 수 있습니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. 보드 관리:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   - 각 페이지 내에서 보드를 생성, 수정 및 삭제할 수 있습니다.
+   - 보드에는 제목, 날짜, 체크박스 상태, 내용 등을 설정할 수 있습니다.
+
+3. 보드 콘텐츠 관리:
+
+   - 각 보드에는 마크다운 형식의 콘텐츠를 추가할 수 있습니다.
+   - 콘텐츠는 제목, 내용, 체크 여부를 포함하며, 수정이 가능합니다.
+
+4. 데이터베이스 관리:
+   - Supabase를 사용하여 데이터베이스를 관리합니다.
+   - boards, pages, board_content 테이블을 사용하여 데이터 저장 및 관리가 이루어집니다.
+
+<br>
+
+> ### UI
+>
+> 페이지 및 보드 관리:
+
+- 페이지 및 보드 목록을 조회하고, 보드에서 할 일을 관리합니다.
+  새로운 페이지와 보드를 추가하고, 기존 항목을 수정/삭제할 수 있습니다.
+
+마크다운 에디터:
+
+- 보드에 대한 콘텐츠를 추가하거나 수정할 때 마크다운 에디터를 사용하여 내용을 작성합니다.
+
+<br>
+
+> ### 오류 처리
+>
+> 데이터 삭제 오류:
+
+- Foreign Key 제약 조건으로 인해 board_content와 boards 테이블 간의 연관성이 존재할 경우, 부모 데이터 삭제가 자식 데이터 삭제를 트리거하지 않도록 설정되어 있습니다.
+  이를 해결하기 위해서는 ON DELETE CASCADE 옵션을 사용하거나, 자식 데이터를 먼저 삭제한 후 부모 데이터를 삭제하는 방식으로 해결했습니다.다.
+
+<br>
+
+> ### 결론
+>
+> 이 프로젝트는 페이지와 보드를 관리하는 시스템으로, 사용자가 페이지를 생성하고 이를 기반으로 보드와 콘텐츠를 관리할 수 있는 기능을 제공합니다. Supabase를 백엔드로 사용하여 실시간 데이터베이스 관리를 처리하며, React와 Next.js를 활용하여 사용자 인터페이스를 구성하고 있습니다.
