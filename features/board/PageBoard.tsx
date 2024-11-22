@@ -116,7 +116,7 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
 
   return (
     <div className="w-full p-5 flex flex-col bg-white">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 bg-white">
         <Button variant={"outline"} onClick={() => router.back()}>
           <ChevronLeft />
         </Button>

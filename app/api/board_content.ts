@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabase";
 import { BoardContentType } from "../types/board";
-// import { BoardContentType } from "../types/board";
 
 // 조회
 export const getContentApi = async (boardId: number) => {
