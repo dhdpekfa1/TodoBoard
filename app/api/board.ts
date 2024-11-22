@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import { BoardDataType } from "../types/board";
 
 // 보드 전체 조회

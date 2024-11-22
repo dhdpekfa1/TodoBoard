@@ -1,5 +1,5 @@
-import { supabase } from "@/lib/supabase";
-import { BoardDataType, PageDataType } from "../types/board";
+import { supabase } from "@/lib/supabase/client";
+import { PageDataType } from "../types/board";
 
 // 페이지 전체 조회
 export const getPageListApi = async () => {
