@@ -86,7 +86,10 @@ const PageList = () => {
                 className="flex items-center gap-2 py-2 px-[10px] bg-[#f5f5f5] rounded-sm text-sm cursor-pointer"
               >
                 <div className="bg-[#00f38d] w-2 h-2 rounded-full" />
-                {data.title ? data.title : "제목 없음"}
+                {data.title && data.title.length > 12
+                  ? `${data.title.slice(0, 13)}...`
+                  : data.title}
+                {!data.title && "제목 없음"}
               </li>
             ))
           ) : (
