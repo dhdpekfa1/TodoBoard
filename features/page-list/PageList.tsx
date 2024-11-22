@@ -89,7 +89,7 @@ const PageList = () => {
                 {data.title && data.title.length > 12
                   ? `${data.title.slice(0, 13)}...`
                   : data.title}
-                {!data.title && "제목 없음"}
+                {!data.title && "등록된 제목이 없습니다."}
               </li>
             ))
           ) : (
