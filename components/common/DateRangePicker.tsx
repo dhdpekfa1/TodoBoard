@@ -33,13 +33,13 @@ const DateRangePicker = ({
   return (
     <div className="flex items-center gap-5">
       <LabelDatePicker
-        label={"From"}
+        label={"start"}
         value={startDate}
         onChange={handleStartDateChange}
         disabled={!isEditing}
       />
       <LabelDatePicker
-        label={"To"}
+        label={"end"}
         value={endDate}
         onChange={handleEndDateChange}
         disabled={!isEditing}
