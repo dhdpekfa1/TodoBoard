@@ -181,13 +181,7 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
         />
         <div className="flex items-center gap-2">
           {isEditing ? (
-            <Button
-              variant={"ghost"}
-              className="text-[#777] font-normal"
-              onClick={onSave}
-            >
-              저장
-            </Button>
+            <ButtonOutline onClick={onSave}>저장</ButtonOutline>
           ) : (
             <ButtonOutline onClick={() => setIsEditing(true)}>
               수정

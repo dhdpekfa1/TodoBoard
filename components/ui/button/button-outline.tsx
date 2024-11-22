@@ -6,7 +6,7 @@ const ButtonOutline = ({ onClick, children }: ButtonProps) => {
   return (
     <Button
       onClick={onClick}
-      className="text-[#e79057] bg-white border border-[#e79057] hover:bg-[#fff9f5]"
+      className="text-[#517157] bg-white border border-[#517157] hover:text-white hover:bg-[#517157] active:bg-[#38503d] hover:shadow-lg"
     >
       {children}
     </Button>
