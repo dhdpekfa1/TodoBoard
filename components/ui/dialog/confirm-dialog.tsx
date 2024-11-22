@@ -19,7 +19,7 @@ const ConfirmDialog = ({ onClick }: ButtonProps) => {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="text-rose-500 border border-rose-500 hover:text-rose-700 hover:bg-rose-400"
+          className="text-rose-500 border border-rose-500 hover:text-white hover:bg-red-500"
         >
           삭제
         </Button>
