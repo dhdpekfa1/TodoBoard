@@ -16,9 +16,7 @@ const useUpdateContent = () => {
       const { error } = await supabase
         .from("board_content")
         .update({
-          title: updateContent.title,
           content: updateContent.content,
-          is_checked: updateContent.isChecked,
         })
         .eq("id", updateContent.contentId);
 

@@ -15,7 +15,5 @@ export interface BoardDataType {
 
 export interface BoardContentType {
   contentId: string | number;
-  title: string;
-  isChecked?: boolean;
   content: string;
 }

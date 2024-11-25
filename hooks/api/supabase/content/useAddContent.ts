@@ -12,9 +12,7 @@ const useAddContent = () => {
   const addContent = async (
     boardId: number,
     contentId?: number,
-    title: string = "",
-    content: string = "",
-    isChecked: boolean = false
+    content: string = ""
   ): Promise<BoardContentType | null> => {
     try {
       // 이미 contentId가 존재 -> 생성하지 않음
@@ -27,12 +25,10 @@ const useAddContent = () => {
         .insert([
           {
             board_id: boardId,
-            title,
             content,
-            is_checked: isChecked,
           },
         ])
-        .select("id, title, content, is_checked");
+        .select("id, content");
 
       if (error) {
         toast({
@@ -46,8 +42,6 @@ const useAddContent = () => {
       if (data && data.length > 0) {
         const newContent: BoardContentType = {
           contentId: data[0].id,
-          isChecked: data[0].is_checked || false,
-          title: data[0].title || "",
           content: data[0].content || "",
         };
 

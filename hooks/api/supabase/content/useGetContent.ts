@@ -15,7 +15,7 @@ const useGetContent = () => {
     try {
       const { data, error } = await supabase
         .from("board_content")
-        .select("id, title, content, is_checked")
+        .select("id, content")
         .eq("board_id", boardId);
 
       if (error) {
@@ -31,9 +31,7 @@ const useGetContent = () => {
       const formattedData: BoardContentType[] =
         data?.map((item) => ({
           contentId: item.id,
-          title: item.title || "",
           content: item.content || "",
-          isChecked: item.is_checked || false,
         })) || [];
 
       setContentData(formattedData);
