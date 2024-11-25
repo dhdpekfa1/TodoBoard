@@ -1,35 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { ButtonOutline } from "@/components/ui";
-import { addPageApi } from "./api/page";
-import { useToast } from "@/hooks/use-toast";
 import PageList from "@/features/page-list/PageList";
+import { useAddPage } from "@/hooks/api";
 
 export default function InitPage() {
-  const router = useRouter();
-  const { toast } = useToast();
-
-  // Supabase Pages table에 새로운 TodoList 추가 TODO: 분리
-  const createPage = async () => {
-    const res = await addPageApi();
-    if (res) {
-      const id = res[0].id;
-
-      toast({
-        title: "새로운 Todo-List가 생성되었습니다.",
-        description: "나만의 Todo를 완성하세요!",
-      });
-      router.push(`/board/${id}`);
-    } else {
-      toast({
-        variant: "destructive",
-        title: "다시 시도해주세요.",
-        description: "Todo-List 생성에 실패했습니다.",
-      });
-      return;
-    }
-  };
+  const createPage = useAddPage();
 
   return (
     <div className="page">

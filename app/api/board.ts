@@ -78,7 +78,7 @@ export const updateBoardsApi = async (
   updatedBoard: BoardDataType
 ): Promise<boolean> => {
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("boards")
       .update({
         title: updatedBoard.title,

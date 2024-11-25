@@ -1,28 +1,26 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { addPageApi, getPageApi, getPageListApi } from "@/app/api/page";
-import { PageDataType } from "@/app/types/board";
 import { ButtonOutline, SearchBar } from "@/components/ui";
+import { useAddPage, useGetPage, useGetPageList } from "@/hooks/api";
 
 const PageList = () => {
   const router = useRouter();
-
-  const [pageData, setPageData] = useState<PageDataType[]>();
   const [searchValue, setSearchValue] = useState("");
   const { toast } = useToast();
 
-  useEffect(() => {
-    fetchPageDataList();
-  }, []);
+  const createPage = useAddPage();
+  const { pages, getPageListApi } = useGetPageList();
+  const { fetchPage } = useGetPage();
 
-  const fetchPageDataList = async () => {
-    const res = await getPageListApi();
-    setPageData(res);
-  };
+  useEffect(() => {
+    getPageListApi();
+  }, [pages]);
 
   const handlePageClick = async (id: number) => {
-    const res = await getPageApi(id);
+    const res = await fetchPage(id);
 
     if (!res) {
       console.error("handlePageClick 실패", res);
@@ -34,42 +32,19 @@ const PageList = () => {
       return;
     }
 
-    router.push(`/board/${id}`);
+    router.push(`/board/${id}`); // 성공 시 라우팅
   };
 
-  // Supabase Pages table에 새로운 TodoList 추가 TODO : 분리
-  const createPage = async () => {
-    const res = await addPageApi();
-    if (res) {
-      const id = res[0].id;
-
-      toast({
-        title: "새로운 Todo-List가 생성되었습니다.",
-        description: "나만의 Todo를 완성하세요!",
-      });
-      router.push(`/board/${id}`);
-
-      fetchPageDataList();
-    } else {
-      toast({
-        variant: "destructive",
-        title: "다시 시도해주세요.",
-        description: "Todo-List가 생성에 실패했습니다..",
-      });
-      return;
-    }
-  };
-
-  // 검색어 필터 함수
-  const filteredPageData = pageData?.filter((data) =>
-    data.title.toLowerCase().includes(searchValue.toLowerCase())
+  // TODO: 검색 기능 확인(제목 없는 경우 포함안됨) _ 검색어 필터 함수
+  const filteredPageData = pages?.filter((data) =>
+    data?.title?.toLowerCase().includes(searchValue.toLowerCase())
   );
 
   return (
     <aside className="page__aside">
       <SearchBar
         placeholder="검색어를 입력하세요."
-        value={searchValue}
+        value={searchValue || ""}
         onChange={(e) => setSearchValue(e.target.value)}
       />
       <ButtonOutline onClick={createPage}>Add New Page</ButtonOutline>
@@ -80,6 +55,8 @@ const PageList = () => {
         <ul className="flex flex-col gap-1">
           {filteredPageData && filteredPageData.length > 0 ? (
             filteredPageData.map((data) => (
+              // {pages && pages.length > 0 ? (
+              //   pages.map((data) => (
               <li
                 key={data.id}
                 onClick={() => handlePageClick(data.id)}
@@ -94,7 +71,7 @@ const PageList = () => {
             ))
           ) : (
             <li className="py-2 px-[10px] text-sm text-[#a6a6a6]">
-              No results found
+              등록된 페이지가 없습니다.
             </li>
           )}
         </ul>

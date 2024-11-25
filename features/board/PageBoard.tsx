@@ -11,9 +11,9 @@ import {
   ConfirmDialog,
   Progress,
 } from "@/components/ui";
-import { deletePageApi, getPageApi, updatePageApi } from "@/app/api/page";
-import { BoardDataType, PageDataType } from "@/app/types/board";
+import { BoardDataType } from "@/app/types/board";
 import { DateRangePicker } from "@/components/common";
+import { useDeletePage, useGetPage, useUpdatePage } from "@/hooks/api";
 
 interface PageBoardProps {
   pageId: number;
@@ -28,27 +28,20 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+  const updatePage = useUpdatePage();
+  const { page, fetchPage } = useGetPage();
 
   useEffect(() => {
-    fetchPageData();
-  }, []);
+    fetchPage(pageId);
+  }, [pageId]);
 
-  const fetchPageData = async () => {
-    const res = await getPageApi(Number(pageId));
-    if (!res) {
-      toast({
-        variant: "destructive",
-        title: "페이지 정보를 불러오지 못했습니다.",
-        description: "네트워크를 확인해주세요.",
-      });
+  useEffect(() => {
+    if (page) {
+      setTitle(page.title || "");
+      setStartDate(page.startDate ? new Date(page.startDate) : undefined);
+      setEndDate(page.endDate ? new Date(page.endDate) : undefined);
     }
-
-    const { start_date, end_date, title } = res;
-
-    setTitle(title);
-    setStartDate(start_date ? new Date(start_date) : undefined);
-    setEndDate(end_date ? new Date(end_date) : undefined);
-  };
+  }, [page]);
 
   const onSave = async () => {
     if (!title || !startDate || !endDate) {
@@ -60,52 +53,26 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
       return;
     }
 
-    // 페이지 데이터 수정
-    const updatedPage: PageDataType = {
+    const updatedPage = {
       id: pageId,
       title,
-      startDate:
-        startDate instanceof Date ? startDate.toISOString() : startDate,
-      endDate: endDate instanceof Date ? endDate.toISOString() : endDate,
+      startDate,
+      endDate,
     };
 
-    const res = await updatePageApi(updatedPage);
-    if (!res) {
+    const success = await updatePage(updatedPage);
+
+    if (success) {
       toast({
-        variant: "destructive",
-        title: "다시 시도해주세요.",
-        description: "페이지 업데이트에 실패했습니다.",
+        title: "성공",
+        description: "페이지가 성공적으로 업데이트되었습니다.",
       });
-      return;
+
+      setIsEditing(false);
     }
-
-    toast({
-      title: "페이지 업데이트 성공",
-      description: "페이지가 성공적으로 업데이트되었습니다.",
-    });
-
-    setIsEditing(false);
   };
 
-  const onDelete = async (id: number) => {
-    const res = await deletePageApi(id);
-
-    if (!res) {
-      toast({
-        variant: "destructive",
-        title: "다시 시도해주세요.",
-        description: "페이지 삭제에 실패했습니다.",
-      });
-      return;
-    }
-
-    toast({
-      title: "페이지 삭제에 성공했습니다.",
-    });
-
-    // 페이지 삭제 후 리디렉션
-    router.push("/");
-  };
+  const onDelete = useDeletePage();
 
   // 완료된 보드 항목을 필터링
   const completedData = boardData.filter((data) => data.isChecked);

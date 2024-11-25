@@ -25,7 +25,7 @@ import { MarkdownComponent } from "./";
 interface CardBoardProps {
   data: BoardDataType;
   onUpdate: (updatedBoard: BoardDataType) => void;
-  fetchBoardData: () => void;
+  fetchBoardData?: () => void;
 }
 
 const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
@@ -135,7 +135,10 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
     toast({
       title: "보드 삭제에 성공했습니다.",
     });
-    fetchBoardData();
+
+    if (fetchBoardData) {
+      fetchBoardData();
+    }
   };
 
   // 수정 모드일 때만 체크박스 상태 변경
