@@ -20,12 +20,16 @@ import { BoardContentType } from "@/app/types/board";
 export interface MarkdownEditorDialogProp {
   children: ReactNode;
   data: BoardContentType | undefined;
+  title: string;
+  isChecked: boolean;
   onUpdate: (updatedBoard: BoardContentType) => void;
 }
 
 const MarkdownEditorDialog = ({
   children,
   data,
+  title,
+  isChecked,
   onUpdate,
 }: MarkdownEditorDialogProp) => {
   const [content, setContent] = useState<string>(data?.content || "");
@@ -34,6 +38,7 @@ const MarkdownEditorDialog = ({
     if (data) {
       setContent(data.content);
     }
+    console.log("content", content);
   }, [data]);
 
   const onSave = () => {
@@ -66,7 +71,18 @@ const MarkdownEditorDialog = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader className="flex flex-col mt-2" />
-
+        <DialogTitle>
+          <div className="flex items-center justify-start gap-2">
+            <Checkbox checked={isChecked} className="h-5 w-5 min-w-5" />
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+              {title}
+            </h4>
+          </div>
+        </DialogTitle>
+        <DialogDescription>
+          마크다운 에디터를 사용하여 TODO-BOARD의 상세 내용을 기록하세요!
+        </DialogDescription>
+        <Separator />
         <MarkdownEditor
           className="h-[320px]"
           value={

@@ -134,7 +134,12 @@ const CardBoard = ({ data, onUpdate }: CardBoardProps) => {
 
       <Separator className="my-3" />
       {/* Add & Edit Content Button */}
-      <MarkdownEditorDialog data={contentData[0]} onUpdate={updateContent}>
+      <MarkdownEditorDialog
+        data={contentData[0]}
+        onUpdate={updateContent}
+        title={title}
+        isChecked={isChecked}
+      >
         <Button
           variant={"ghost"}
           className="w-full font-normal text-[rgb(109,109,109)]"
