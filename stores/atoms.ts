@@ -17,7 +17,3 @@ export const boardsAtom = atom<BoardDataType[]>([]);
 
 // // 단일 board
 export const boardAtom = atom<BoardDataType | null>(null);
-
-// content
-// export const contentAtom = atom<BoardContentType | null>(null);
-export const contentAtom = atom<BoardContentType[]>([]);

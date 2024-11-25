@@ -1,13 +1,12 @@
 "use client";
 
-import { useAtom } from "jotai";
 import { supabase } from "@/lib/supabase";
 import { toast } from "@/hooks/use-toast";
-import { contentAtom } from "@/stores/atoms";
 import { BoardContentType } from "@/app/types/board";
+import { useState } from "react";
 
 const useAddContent = () => {
-  const [, setContentData] = useAtom(contentAtom);
+  const [contentData, setContentData] = useState<BoardContentType[]>([]);
 
   const addContent = async (
     boardId: number,
