@@ -28,40 +28,34 @@ const MarkdownEditorDialog = ({
   data,
   onUpdate,
 }: MarkdownEditorDialogProp) => {
-  const [content, setContent] = useState(data?.content || "");
-  const [title, setTitle] = useState(data?.title || "");
-  const [isChecked, setIsChecked] = useState(data?.isChecked || false);
+  const [content, setContent] = useState<string>(data?.content || "");
   const { toast } = useToast();
 
   useEffect(() => {
     if (data) {
-      setTitle(data.title);
       setContent(data.content);
-      setIsChecked(data.isChecked || false);
     }
   }, [data]);
 
   const onSave = () => {
     try {
-      if (!title || !content) {
+      if (!content) {
         toast({
           variant: "destructive",
           title: "필수 항목을 모두 입력하세요.",
-          description: "제목과 내용을 입력해 주세요.",
+          description: "내용을 입력해주세요.",
         });
         return;
       }
 
       if (!data) {
-        console.error("data is undefined");
+        console.error("데이터가 없습니다.");
         return;
       }
 
       onUpdate({
         ...data,
-        title,
         content,
-        isChecked,
       });
     } catch (err) {
       console.error(err);
@@ -72,29 +66,8 @@ const MarkdownEditorDialog = ({
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
-        <DialogHeader className="flex flex-col">
-          <DialogTitle>
-            <div className="flex items-center justify-start gap-2">
-              <Checkbox
-                id={String(data?.contentId)}
-                checked={isChecked}
-                onCheckedChange={() => setIsChecked((prevState) => !prevState)}
-                className="w-5 h-5 min-w-5"
-              />
-              <input
-                type="text"
-                placeholder="게시물의 제목을 입력하세요."
-                className="text-xl outline-none"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-          </DialogTitle>
-          <DialogDescription>
-            마크다운 에디터를 사용해 Todo Board를 꾸며보세요.
-          </DialogDescription>
-        </DialogHeader>
-        <Separator />
+        <DialogHeader className="flex flex-col mt-2" />
+
         <MarkdownEditor
           className="h-[320px]"
           value={
@@ -110,7 +83,7 @@ const MarkdownEditorDialog = ({
               취소
             </Button>
           </DialogClose>
-          {title && content ? (
+          {content ? (
             <DialogClose asChild>
               <ButtonFill onClick={onSave}>등록</ButtonFill>
             </DialogClose>

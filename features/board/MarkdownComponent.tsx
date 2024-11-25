@@ -8,16 +8,6 @@ interface MarkdownComponentProps {
   content: string;
 }
 
-// 커스텀 리액트 렌더러 설정
-// const renderers = {
-//   h1: (props: any) => <h2 className="text-3xl font-semibold" {...props} />,
-//   h2: (props: any) => <h2 className="text-2xl font-semibold" {...props} />,
-//   h3: (props: any) => <h2 className="text-1xl font-semibold" {...props} />,
-//   h4: (props: any) => <h2 className="text-xl font-semibold" {...props} />,
-//   ul: (props: any) => <ul className="list-disc pl-5" {...props} />,
-//   ol: (props: any) => <ol className="list-decimal pl-5" {...props} />,
-//   p: (props: any) => <h2 className="text-sm font-semibold" {...props} />,
-// };
 const renderers = {
   h1: (props: any) => (
     <h1

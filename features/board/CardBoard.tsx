@@ -81,7 +81,7 @@ const CardBoard = ({ data, onUpdate }: CardBoardProps) => {
     <Card className="w-full flex flex-col items-center p-5">
       {/* Card Title */}
       <div className="w-full flex items-center justify-between mb-5">
-        <div className="flex items-center justify-start gap-2">
+        <div className="w-full flex items-center justify-start gap-2">
           <Checkbox
             id={String(data.boardId)}
             className="w-5 h-5"
@@ -91,7 +91,7 @@ const CardBoard = ({ data, onUpdate }: CardBoardProps) => {
           <input
             type="text"
             placeholder="제목을 입력하세요."
-            className="text-xl outline-none bg-white"
+            className="w-full text-xl outline-none bg-white"
             disabled={!isEditing}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
