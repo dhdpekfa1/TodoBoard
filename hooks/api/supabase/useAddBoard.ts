@@ -50,7 +50,6 @@ const useAddBoard = () => {
           content: data[0].content || null,
         };
 
-        // boardsAtom에 새 보드 추가
         setBoards((prevBoards) => [...prevBoards, newBoard]);
 
         toast({

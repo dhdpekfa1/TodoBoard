@@ -36,7 +36,7 @@ const useGetBoardList = () => {
           content: item.content || null,
         })) || [];
 
-      setBoards(formattedBoards); // 상태 업데이트
+      setBoards(formattedBoards);
     } catch (err) {
       console.error("Error in useBoardList.fetchBoards:", err);
       toast({

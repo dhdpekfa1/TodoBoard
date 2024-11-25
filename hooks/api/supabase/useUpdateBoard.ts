@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { BoardDataType } from "@/app/types/board";
 
 const useUpdateBoard = () => {
-  const [boards, setBoards] = useAtom(boardsAtom);
+  const [, setBoards] = useAtom(boardsAtom);
   const { toast } = useToast();
 
   const updateBoardApi = async (
@@ -41,7 +41,6 @@ const useUpdateBoard = () => {
         return false;
       }
 
-      // boardsAtom 업데이트
       setBoards((prevBoards) =>
         prevBoards.map((board) =>
           board.boardId === updatedBoard.boardId ? updatedBoard : board

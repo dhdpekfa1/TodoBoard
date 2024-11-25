@@ -43,7 +43,12 @@ const BoardPage = () => {
       return;
     }
 
-    setBoards((prevState) => [...prevState, newBoard]);
+    setBoards((prevState) => {
+      const uniqueBoards = prevState.filter(
+        (board) => board.boardId !== newBoard.boardId
+      );
+      return [...uniqueBoards, newBoard];
+    });
   };
 
   const onSaveBoard = async (updatedBoard: BoardDataType) => {

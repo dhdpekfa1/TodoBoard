@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PageDataType } from "@/app/types/board";
 
 const useUpdatePage = () => {
-  const [, setPage] = useAtom(pageAtom); // 전역 상태 업데이트를 위한 setter
+  const [, setPage] = useAtom(pageAtom);
   const { toast } = useToast();
 
   const updatePageApi = async (updatedPage: PageDataType): Promise<boolean> => {
@@ -38,7 +38,6 @@ const useUpdatePage = () => {
         return false;
       }
 
-      // 전역 상태 업데이트
       setPage((prevPage) =>
         prevPage && prevPage.id === updatedPage.id
           ? { ...prevPage, ...updatedPage }
@@ -62,7 +61,7 @@ const useUpdatePage = () => {
     }
   };
 
-  return updatePageApi; // 함수 반환
+  return updatePageApi;
 };
 
 export { useUpdatePage };
