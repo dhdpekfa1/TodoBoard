@@ -63,7 +63,7 @@ const useAddBoard = () => {
 
       return null;
     } catch (err) {
-      console.error("Error in addBoardApi:", err);
+      console.error("Error in useAddBoard:", err);
 
       toast({
         variant: "destructive",
@@ -78,4 +78,4 @@ const useAddBoard = () => {
   return addBoardApi;
 };
 
-export default useAddBoard;
+export { useAddBoard };

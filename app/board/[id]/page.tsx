@@ -1,70 +1,61 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import styles from "./page.module.scss";
 import { CardBoard, PageBoard } from "@/features/board";
 import PageList from "@/features/page-list/PageList";
 import { BoardDataType } from "@/app/types/board";
-import { addBoardApi, getBoardApi, updateBoardsApi } from "@/app/api/board";
 import { useToast } from "@/hooks/use-toast";
+import { useAddBoard, useGetBoardList, useUpdateBoard } from "@/hooks/api";
+import { useAtom } from "jotai";
+import { boardsAtom } from "@/stores/atoms";
 
 const BoardPage = () => {
   const params = useParams();
   const pageId = params?.id;
-  const [boardData, setBoardData] = useState<BoardDataType[]>([]);
   const { toast } = useToast();
+  const [, setBoards] = useAtom(boardsAtom);
+  const { boards, fetchBoards } = useGetBoardList();
+  const addBoard = useAddBoard();
+  const updateBoard = useUpdateBoard();
 
   useEffect(() => {
-    fetchBoardData();
-  }, []);
-
-  const fetchBoardData = async () => {
-    const res = await getBoardApi(Number(pageId));
-
-    if (!res) {
-      toast({
-        variant: "destructive",
-        title: "보드 정보를 불러오지 못했습니다.",
-        description: "네트워크를 확인해주세요.",
-      });
+    if (pageId) {
+      fetchBoards(Number(pageId));
     }
-    setBoardData(res);
-  };
+  }, [pageId]);
 
   const createBoard = async () => {
-    const newBoard = await addBoardApi(Number(pageId));
+    if (!pageId) {
+      toast({
+        variant: "destructive",
+        title: "잘못된 요청",
+        description: "페이지 ID가 유효하지 않습니다.",
+      });
+      return;
+    }
+
+    const newBoard = await addBoard(Number(pageId));
+
     if (!newBoard) {
       console.error("Failed to create board.");
       return;
     }
 
-    setBoardData((prevState) => [...prevState, newBoard]);
+    setBoards((prevState) => [...prevState, newBoard]);
   };
 
-  const updateBoard = async (updatedBoard: BoardDataType) => {
-    const res = await updateBoardsApi(updatedBoard);
-    if (!res) {
-      console.error("Failed to update board.", res);
+  const onSaveBoard = async (updatedBoard: BoardDataType) => {
+    const success = await updateBoard(updatedBoard);
+
+    if (!success) {
+      console.error("Failed to update board.");
+      return;
     }
 
-    setBoardData((prevState) =>
-      prevState.map((board) =>
-        board.boardId === updatedBoard.boardId ? updatedBoard : board
-      )
-    );
+    console.log("Board updated successfully.");
   };
-
-  // 날짜 핸들러 함수
-  // const handleDateChange = (
-  //   name: keyof PageDataType,
-  //   value: Date | undefined
-  // ) => {
-  //   setPageData((prevState) => ({
-  //     ...prevState,
-  //     [name]: value || new Date(),
-  //   }));
-  // };
 
   return (
     <div className="page">
@@ -73,10 +64,10 @@ const BoardPage = () => {
         <PageBoard
           createBoard={createBoard}
           pageId={Number(pageId)}
-          boardData={boardData}
+          boardData={boards}
         />
         <div className={styles.body}>
-          {!boardData.length ? (
+          {!boards.length ? (
             <div className={styles.body__noData}>
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-[#454545]">
                 There is no board yet.
@@ -89,12 +80,12 @@ const BoardPage = () => {
             </div>
           ) : (
             <div className={styles.body__isData}>
-              {boardData.map((data) => (
+              {boards.map((board) => (
                 <CardBoard
-                  key={data.boardId}
-                  data={data}
-                  onUpdate={updateBoard}
-                  fetchBoardData={fetchBoardData}
+                  key={board.boardId}
+                  data={board}
+                  onUpdate={onSaveBoard}
+                  fetchBoardData={() => fetchBoards(Number(pageId))}
                 />
               ))}
             </div>

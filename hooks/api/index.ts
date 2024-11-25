@@ -1,5 +1,12 @@
+// Page Table
 export { useGetPageList } from "./supabase/useGetPageList";
 export { useGetPage } from "./supabase/useGetPage";
 export { useAddPage } from "./supabase/useAddPage";
-export { useDeletePage } from "./supabase/useDeletePage";
 export { useUpdatePage } from "./supabase/useUpdatePage";
+export { useDeletePage } from "./supabase/useDeletePage";
+
+// Board Table
+export { useGetBoardList } from "./supabase/useGetBoardList";
+export { useAddBoard } from "./supabase/useAddBoard";
+export { useUpdateBoard } from "./supabase/useUpdateBoard";
+export { useDeleteBoard } from "./supabase/useDeleteBoard";

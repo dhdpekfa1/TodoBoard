@@ -13,7 +13,6 @@ import {
 } from "@/components/ui";
 import { useToast } from "@/hooks/use-toast";
 import { BoardContentType, BoardDataType } from "@/app/types/board";
-import { deleteBoardApi } from "@/app/api/board";
 import {
   addContentApi,
   getContentApi,
@@ -21,6 +20,7 @@ import {
 } from "@/app/api/board_content";
 import { DateRangePicker } from "@/components/common";
 import { MarkdownComponent } from "./";
+import { useDeleteBoard } from "@/hooks/api";
 
 interface CardBoardProps {
   data: BoardDataType;
@@ -45,6 +45,7 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
   const [isChecked, setIsChecked] = useState(data.isChecked || false);
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
+  const onDelete = useDeleteBoard();
 
   useEffect(() => {
     fetchContentData();
@@ -121,27 +122,7 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
     setIsEditing(false);
   };
 
-  const onDelete = async (id: number) => {
-    const res = await deleteBoardApi(id);
-
-    if (!res) {
-      toast({
-        variant: "destructive",
-        title: "다시 시도해주세요.",
-        description: "보드 삭제에 실패했습니다.",
-      });
-      return;
-    }
-    toast({
-      title: "보드 삭제에 성공했습니다.",
-    });
-
-    if (fetchBoardData) {
-      fetchBoardData();
-    }
-  };
-
-  // 수정 모드일 때만 체크박스 상태 변경
+  // // 수정 모드일 때만 체크박스 상태 변경
   const handleCheckboxChange = () => {
     if (isEditing) {
       setIsChecked((prevState) => !prevState);
