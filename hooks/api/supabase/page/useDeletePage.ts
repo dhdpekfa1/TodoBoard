@@ -2,11 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 const useDeletePage = () => {
   const router = useRouter();
-  const { toast } = useToast();
 
   const deletePage = async (pageId: number) => {
     try {

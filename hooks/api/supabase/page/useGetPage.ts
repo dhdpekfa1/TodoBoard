@@ -3,11 +3,10 @@
 import { useAtom } from "jotai";
 import { pageAtom } from "@/stores/atoms";
 import { supabase } from "@/lib/supabase";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 const useGetPage = () => {
   const [page, setPage] = useAtom(pageAtom);
-  const { toast } = useToast();
 
   const fetchPage = async (pageId: number) => {
     try {

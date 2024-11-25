@@ -6,7 +6,7 @@ import styles from "./page.module.scss";
 import { CardBoard, PageBoard } from "@/features/board";
 import PageList from "@/features/page-list/PageList";
 import { BoardDataType } from "@/app/types/board";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { useAddBoard, useGetBoardList, useUpdateBoard } from "@/hooks/api";
 import { useAtom } from "jotai";
 import { boardsAtom } from "@/stores/atoms";
@@ -14,7 +14,6 @@ import { boardsAtom } from "@/stores/atoms";
 const BoardPage = () => {
   const params = useParams();
   const pageId = params?.id;
-  const { toast } = useToast();
   const [, setBoards] = useAtom(boardsAtom);
   const { boards, fetchBoards } = useGetBoardList();
   const addBoard = useAddBoard();

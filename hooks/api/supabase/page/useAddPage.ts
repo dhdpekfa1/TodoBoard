@@ -4,11 +4,10 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { pagesAtom } from "@/stores/atoms";
 import { supabase } from "@/lib/supabase";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 const useAddPage = () => {
   const [, setPages] = useAtom(pagesAtom);
-  const { toast } = useToast();
   const router = useRouter();
 
   const addPageApi = async () => {

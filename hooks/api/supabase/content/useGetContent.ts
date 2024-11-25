@@ -3,12 +3,11 @@
 import { useAtom } from "jotai";
 import { supabase } from "@/lib/supabase";
 import { contentAtom } from "@/stores/atoms";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { BoardContentType } from "@/app/types/board";
 
 const useGetContent = () => {
   const [contentData, setContentData] = useAtom(contentAtom);
-  const { toast } = useToast();
 
   const fetchContent = async (
     boardId: number

@@ -2,14 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { ButtonOutline, SearchBar } from "@/components/ui";
 import { useAddPage, useGetPage, useGetPageList } from "@/hooks/api";
 
 const PageList = () => {
   const router = useRouter();
   const [searchValue, setSearchValue] = useState("");
-  const { toast } = useToast();
 
   const createPage = useAddPage();
   const { pages, getPageListApi } = useGetPageList();

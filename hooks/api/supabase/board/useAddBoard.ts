@@ -2,12 +2,11 @@
 
 import { useAtom } from "jotai";
 import { supabase } from "@/lib/supabase";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { boardsAtom } from "@/stores/atoms";
 import { BoardDataType } from "@/app/types/board";
 
 const useAddBoard = () => {
-  const { toast } = useToast();
   const [, setBoards] = useAtom(boardsAtom);
 
   const addBoardApi = async (

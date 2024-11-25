@@ -3,12 +3,11 @@
 import { useAtom } from "jotai";
 import { pageAtom } from "@/stores/atoms";
 import { supabase } from "@/lib/supabase";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { PageDataType } from "@/app/types/board";
 
 const useUpdatePage = () => {
   const [, setPage] = useAtom(pageAtom);
-  const { toast } = useToast();
 
   const updatePageApi = async (updatedPage: PageDataType): Promise<boolean> => {
     try {

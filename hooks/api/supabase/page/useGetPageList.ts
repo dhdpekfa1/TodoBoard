@@ -3,11 +3,10 @@
 import { useAtom } from "jotai";
 import { pagesAtom } from "@/stores/atoms";
 import { supabase } from "@/lib/supabase";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 const useGetPageList = () => {
   const [pages, setPages] = useAtom(pagesAtom);
-  const { toast } = useToast();
 
   const getPageListApi = async () => {
     try {

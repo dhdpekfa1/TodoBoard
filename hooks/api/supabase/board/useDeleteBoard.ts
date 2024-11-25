@@ -3,11 +3,10 @@
 import { useAtom } from "jotai";
 import { supabase } from "@/lib/supabase";
 import { boardsAtom } from "@/stores/atoms";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 const useDeleteBoard = () => {
   const [, setBoards] = useAtom(boardsAtom);
-  const { toast } = useToast();
 
   const deleteBoard = async (boardId: number): Promise<boolean> => {
     try {

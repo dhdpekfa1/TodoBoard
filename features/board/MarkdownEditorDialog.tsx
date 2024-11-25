@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import MarkdownEditor from "@uiw/react-markdown-editor";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import {
   ButtonFill,
   Button,
@@ -29,7 +29,6 @@ const MarkdownEditorDialog = ({
   onUpdate,
 }: MarkdownEditorDialogProp) => {
   const [content, setContent] = useState<string>(data?.content || "");
-  const { toast } = useToast();
 
   useEffect(() => {
     if (data) {

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { ChevronLeft } from "lucide-react";
 import {
   ButtonFill,
@@ -26,7 +26,6 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
   const [isEditing, setIsEditing] = useState(false);
-  const { toast } = useToast();
   const router = useRouter();
 
   const { page, fetchPage } = useGetPage();
