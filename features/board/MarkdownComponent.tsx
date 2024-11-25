@@ -2,72 +2,60 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
-import rehypeReact from "rehype-react";
+import rehypeRaw from "rehype-raw";
+import { start } from "repl";
 
-interface MarkdownComponentProps {
-  content: string;
-}
-
-const renderers = {
-  h1: (props: any) => (
-    <h1
-      style={{ fontSize: "36px !important" }}
-      className="font-semibold text-4xl"
-      {...props}
-    />
-  ),
-  h2: (props: any) => (
-    <h2
-      style={{ fontSize: "30px !important" }}
-      className="font-semibold text-3xl"
-      {...props}
-    />
-  ),
-  h3: (props: any) => (
-    <h3
-      style={{ fontSize: "24px !important" }}
-      className="font-semibold text-2xl"
-      {...props}
-    />
-  ),
-  h4: (props: any) => (
-    <h4
-      style={{ fontSize: "20px !important" }}
-      className="font-semibold text-xl"
-      {...props}
-    />
-  ),
-  p: (props: any) => (
-    <p
-      style={{ fontSize: "16px" }}
-      className="leading-relaxed text-base"
-      {...props}
-    />
-  ),
-  ul: (props: any) => (
-    <ul style={{ marginLeft: "20px" }} className="list-disc" {...props} />
-  ),
-  ol: (props: any) => (
-    <ol style={{ marginLeft: "20px" }} className="list-decimal" {...props} />
-  ),
-  li: (props: any) => (
-    <li style={{ fontSize: "16px" }} className="text-base" {...props} />
-  ),
+const markdownStyles: React.CSSProperties = {
+  fontFamily: "Arial, sans-serif",
+  lineHeight: 1.2,
+  color: "#333",
+  backgroundColor: "#efefef",
+  width: "100%",
+  textAlign: "left",
+  padding: "1em",
+  boxSizing: "border-box",
+  borderRadius: "8px",
 };
 
-const MarkdownComponent = ({ content }: MarkdownComponentProps) => {
+const MarkdownComponent = ({ content }: { content: string }) => {
   return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm, remarkBreaks]}
-      rehypePlugins={[
-        [
-          rehypeReact,
-          { createElement: React.createElement, components: renderers },
-        ],
-      ]}
-    >
-      {content}
-    </ReactMarkdown>
+    <div style={markdownStyles}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm, remarkBreaks]}
+        rehypePlugins={[rehypeRaw]}
+        components={{
+          h1: ({ children }) => (
+            <h1 style={{ fontSize: "2em", margin: "0.67em 0" }}>{children}</h1>
+          ),
+          h2: ({ children }) => (
+            <h2 style={{ fontSize: "1.5em", margin: "0.75em 0" }}>
+              {children}
+            </h2>
+          ),
+          ul: ({ children }) => (
+            <ul style={{ paddingLeft: "1.5em", listStyleType: "disc" }}>
+              {children}
+            </ul>
+          ),
+          ol: ({ children }) => (
+            <ol style={{ paddingLeft: "1.5em", listStyleType: "decimal" }}>
+              {children}
+            </ol>
+          ),
+          li: ({ children }) => (
+            <li style={{ margin: "0.5em 0" }}>{children}</li>
+          ),
+          u: ({ children }) => (
+            <u style={{ textDecoration: "underline" }}>{children}</u>
+          ),
+          strong: ({ children }) => (
+            <strong style={{ fontWeight: "bold" }}>{children}</strong>
+          ),
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
   );
 };
 

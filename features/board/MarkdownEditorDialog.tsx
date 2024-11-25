@@ -38,7 +38,6 @@ const MarkdownEditorDialog = ({
     if (data) {
       setContent(data.content);
     }
-    console.log("content", content);
   }, [data]);
 
   const onSave = () => {
