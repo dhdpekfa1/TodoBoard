@@ -28,8 +28,10 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const updatePage = useUpdatePage();
+
   const { page, fetchPage } = useGetPage();
+  const updatePage = useUpdatePage();
+  const onDelete = useDeletePage();
 
   useEffect(() => {
     fetchPage(pageId);
@@ -71,8 +73,6 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
       setIsEditing(false);
     }
   };
-
-  const onDelete = useDeletePage();
 
   // 완료된 보드 항목을 필터링
   const completedData = boardData.filter((data) => data.isChecked);

@@ -12,15 +12,15 @@ import {
   Separator,
 } from "@/components/ui";
 import { useToast } from "@/hooks/use-toast";
-import { BoardContentType, BoardDataType } from "@/app/types/board";
-import {
-  addContentApi,
-  getContentApi,
-  updateContentApi,
-} from "@/app/api/board_content";
+import { BoardDataType } from "@/app/types/board";
 import { DateRangePicker } from "@/components/common";
 import { MarkdownComponent } from "./";
-import { useDeleteBoard } from "@/hooks/api";
+import {
+  useDeleteBoard,
+  useGetContent,
+  useAddContent,
+  useUpdateContent,
+} from "@/hooks/api";
 
 interface CardBoardProps {
   data: BoardDataType;
@@ -28,7 +28,7 @@ interface CardBoardProps {
   fetchBoardData?: () => void;
 }
 
-const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
+const CardBoard = ({ data, onUpdate }: CardBoardProps) => {
   const [title, setTitle] = useState(data.title);
   const [startDate, setStartDate] = useState<Date | undefined>(
     data.startDate ? new Date(data.startDate) : undefined
@@ -36,73 +36,20 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
   const [endDate, setEndDate] = useState<Date | undefined>(
     data.endDate ? new Date(data.endDate) : undefined
   );
-  const [contentData, setContentData] = useState<BoardContentType>({
-    contentId: "",
-    title: "",
-    content: "",
-    isChecked: false,
-  });
   const [isChecked, setIsChecked] = useState(data.isChecked || false);
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
-  const onDelete = useDeleteBoard();
+
+  const { contentData, fetchContent } = useGetContent();
+  const createContent = useAddContent();
+  const updateContent = useUpdateContent();
+  const onDeleteBoard = useDeleteBoard();
 
   useEffect(() => {
-    fetchContentData();
-  }, []);
+    fetchContent(Number(data.boardId));
+  }, [data.boardId]);
 
-  const fetchContentData = async () => {
-    const res = await getContentApi(Number(data.boardId));
-
-    if (res && res.length > 0 && res[0]?.id) {
-      setContentData({
-        contentId: res[0].id,
-        title: res[0].title,
-        content: res[0].content,
-        isChecked: res[0].is_checked,
-      });
-    } else {
-      setContentData({
-        contentId: "",
-        title: "",
-        content: "",
-        isChecked: false,
-      });
-    }
-  };
-
-  // boardContent 생성
-  const createContent = async () => {
-    if (contentData && contentData.contentId) {
-      return;
-    }
-
-    const newContent = await addContentApi(Number(data.boardId));
-    if (!newContent) {
-      console.error("Failed to create content.");
-      return;
-    }
-
-    setContentData(newContent);
-  };
-
-  // boardContent 등록(수정)
-  const updateContent = async (updateContent: BoardContentType) => {
-    const res = await updateContentApi(updateContent);
-
-    if (!res) {
-      console.error("Failed to update content.", res);
-      return;
-    }
-
-    setContentData({
-      ...contentData,
-      title: updateContent.title,
-      content: updateContent.content,
-      isChecked: updateContent.isChecked,
-    });
-  };
-
+  // 보드 저장
   const onSave = () => {
     if (!title || !startDate || !endDate) {
       toast({
@@ -112,6 +59,7 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
       });
       return;
     }
+
     onUpdate({
       ...data,
       title,
@@ -172,27 +120,32 @@ const CardBoard = ({ data, onUpdate, fetchBoardData }: CardBoardProps) => {
             </ButtonOutline>
           )}
 
-          <DeleteButton onClick={() => onDelete(Number(data.boardId))} />
+          <DeleteButton onClick={() => onDeleteBoard(Number(data.boardId))} />
         </div>
       </div>
 
-      {/* TODO: 마크다운 화면 표시 확인 및 UI 구성 */}
-      {contentData.contentId && (
-        <>
+      {/* 콘텐츠 표시 */}
+      {contentData.map((content) => (
+        <React.Fragment key={content.contentId}>
           <Separator className="my-3" />
-          <MarkdownComponent content={contentData.content} />
-        </>
-      )}
+          <MarkdownComponent content={content.content} />
+        </React.Fragment>
+      ))}
 
       <Separator className="my-3" />
       {/* Add & Edit Content Button */}
-      <MarkdownEditorDialog data={contentData} onUpdate={updateContent}>
+      <MarkdownEditorDialog data={contentData[0]} onUpdate={updateContent}>
         <Button
           variant={"ghost"}
           className="w-full font-normal text-[rgb(109,109,109)]"
-          onClick={createContent}
+          onClick={() =>
+            createContent(
+              Number(data.boardId),
+              Number(contentData[0]?.contentId)
+            )
+          }
         >
-          {contentData.contentId ? "Edit Content" : "Add Contents"}
+          {contentData.length > 0 ? "Edit Content" : "Add Contents"}
         </Button>
       </MarkdownEditorDialog>
     </Card>

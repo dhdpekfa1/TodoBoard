@@ -85,7 +85,6 @@ const BoardPage = () => {
                   key={board.boardId}
                   data={board}
                   onUpdate={onSaveBoard}
-                  fetchBoardData={() => fetchBoards(Number(pageId))}
                 />
               ))}
             </div>
