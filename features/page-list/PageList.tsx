@@ -32,13 +32,24 @@ const PageList = () => {
       return;
     }
 
-    router.push(`/board/${id}`); // 성공 시 라우팅
+    router.push(`/board/${id}`);
   };
 
-  // TODO: 검색 기능 확인(제목 없는 경우 포함안됨) _ 검색어 필터 함수
-  const filteredPageData = pages?.filter((data) =>
-    data?.title?.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  // 검색어 필터 함수
+  const filteredPageData = pages
+    ?.filter((data) => {
+      // 타이틀이 없거나, 검색어가 포함된 경우 필터링
+      return (
+        !searchValue ||
+        data?.title?.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    })
+    ?.sort((a, b) => {
+      // 타이틀이 없는 경우 우선순위 조정 (빈 제목 아래로 이동)
+      if (!a.title) return 1;
+      if (!b.title) return -1;
+      return a.title.localeCompare(b.title);
+    });
 
   return (
     <aside className="page__aside">
