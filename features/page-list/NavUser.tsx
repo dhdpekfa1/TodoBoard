@@ -1,5 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
+import { useSetAtom } from "jotai";
+import { userAtom } from "@/stores/user";
+import { createClient } from "@/lib/supabase/client";
 import {
   BadgeCheck,
   Bell,
@@ -21,14 +26,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui";
-import { toast } from "@/hooks/use-toast";
 
 import { User } from "@/app/types/user";
-import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
 
 const NavUser = ({ user }: { user: User | null }) => {
   const supabase = createClient();
+  const setUser = useSetAtom(userAtom);
+
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -41,6 +45,7 @@ const NavUser = ({ user }: { user: User | null }) => {
       });
     }
 
+    setUser(null); // 로그아웃 성공 시 userAtom을 null로 설정
     toast({
       title: "로그아웃 완료",
       description: "일정 관리 앱을 사용해주셔서 감사합니다.",

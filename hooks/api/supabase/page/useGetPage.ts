@@ -2,18 +2,32 @@
 
 import { useAtom } from "jotai";
 import { pageAtom } from "@/stores/atoms";
+import { userAtom } from "@/stores/user";
 import { supabase } from "@/lib/supabase";
 import { toast } from "@/hooks/use-toast";
 
 const useGetPage = () => {
+  const [user] = useAtom(userAtom);
   const [page, setPage] = useAtom(pageAtom);
 
   const fetchPage = async (pageId: number) => {
     try {
+      const userUid = user?.id;
+
+      if (!userUid) {
+        toast({
+          variant: "destructive",
+          title: "유저 인증 실패",
+          description: "로그인 상태를 확인해주세요.",
+        });
+        return null;
+      }
+
       const { data, error } = await supabase
         .from("pages")
         .select("*")
-        .eq("id", pageId);
+        .eq("id", pageId)
+        .eq("user_uid", userUid);
 
       if (error) {
         toast({

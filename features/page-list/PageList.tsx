@@ -9,13 +9,6 @@ import NavUser from "./NavUser";
 import { useAtom } from "jotai";
 import { userAtom } from "@/stores/user";
 
-// const userData = {
-//   name: "Ollin",
-//   email: "ollin@example.com",
-//   imgUrl: "/avatars/shadcn.jpg",
-//   phone: "",
-// };
-
 const PageList = () => {
   const router = useRouter();
   const [searchValue, setSearchValue] = useState("");

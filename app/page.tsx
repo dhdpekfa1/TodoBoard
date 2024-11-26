@@ -62,6 +62,7 @@ const LoginPage = () => {
         password,
       });
 
+      // 로그인 실패 처리
       if (error) {
         toast({
           variant: "destructive",
@@ -71,37 +72,83 @@ const LoginPage = () => {
         return;
       }
 
-      if (data) {
+      // 로그인 성공 처리
+      if (data?.user) {
+        const { id, email, phone } = data.user;
+
         toast({
-          title: "회원가입 성공",
+          title: "로그인 성공",
           description: "일정관리를 시작하세요!",
         });
-        router.replace("/board");
-        console.log(data);
-        // 전역으로 user 상태 업데이트
+
+        // 전역 상태 업데이트
         setUser({
-          id: data.user?.id || "",
-          email: data.user?.email || "",
-          phone: data.user?.phone || "",
+          id: id || "",
+          email: email || "",
+          phone: phone || "",
           imgUrl: "assets/images/logo.png",
+        });
+
+        router.replace("/board");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "로그인 실패",
+          description: "사용자 정보를 가져올 수 없습니다.",
         });
       }
     } catch (err) {
       console.error("Error in useSignin:", err);
       toast({
         variant: "destructive",
-        title: err,
-        description: "서버와 연결할 수 없습니다. 다시 시도해주세요.",
+        title: "서버 오류",
+        description:
+          err instanceof Error
+            ? err.message
+            : "서버와 연결할 수 없습니다. 다시 시도해주세요.",
       });
     }
   };
 
   const signinWithKakao = async () => {
-    const res = await signInWithKakao();
-    if (!res) console.log(res);
-    // TODO: User 전역 업데이트 User
+    try {
+      const res = await signInWithKakao();
+      if (res?.data) {
+        toast({
+          title: "카카오 로그인 성공",
+          description: "환영합니다!",
+        });
+
+        setUser({
+          id: res.data.id,
+          email: res.data.email,
+          phone: res.data.phone || "",
+          imgUrl: res.data.profileImage || "assets/images/logo.png",
+        });
+
+        router.replace("/board");
+      } else {
+        throw new Error("카카오 로그인 실패");
+      }
+    } catch (err) {
+      console.error("Error in signinWithKakao:", err);
+      toast({
+        variant: "destructive",
+        title: "카카오 로그인 실패",
+        description:
+          err instanceof Error
+            ? err.message
+            : "카카오 인증 중 문제가 발생했습니다.",
+      });
+    }
   };
-  const handleGoogleSignin = async () => {};
+  const handleGoogleSignin = async () => {
+    toast({
+      variant: "default",
+      title: "Google 로그인 준비 중",
+      description: "구글 로그인 기능은 현재 준비 중입니다.",
+    });
+  };
 
   return (
     <div className="page">
@@ -143,10 +190,11 @@ const LoginPage = () => {
             <div className="relative grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">비밀번호</Label>
-                <ResetPasswordDialog />
-                {/* <small className="ml-auto inline-block text-sm underline">
-                  비밀번호를 잊으셨나요?
-                </small> */}
+                <ResetPasswordDialog>
+                  <p className="ml-auto inline-block text-sm underline cursor-pointer">
+                    비밀번호를 잊으셨나요?
+                  </p>
+                </ResetPasswordDialog>
               </div>
               <Input
                 id="password"
