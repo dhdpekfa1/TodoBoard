@@ -50,3 +50,25 @@ export {
 export { Toaster } from "@/components/ui/toast/toaster";
 export { Skeleton } from "@/components/ui/skeleton/skeleton";
 export { Label } from "@/components/ui/label/label";
+export {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@/components/ui/avater/avatar";
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
+} from "@/components/ui/dropdown/dropdown-menu";

@@ -1,9 +1,5 @@
-import {
-  BoardContentType,
-  BoardDataType,
-  PageDataType,
-} from "@/app/types/board";
 import { atom } from "jotai";
+import { BoardDataType, PageDataType } from "@/app/types/board";
 
 /** Supabase 'pages' 테이블 내부 모든 데이터 조회 */
 // 전체 Page 목록 조회

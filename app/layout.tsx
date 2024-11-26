@@ -3,7 +3,6 @@ import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import "@/public/styles/main.scss";
 import { Toaster } from "@/components/ui";
-import { Header } from "@/components/common";
 
 const NOTO_SANS_KR = Noto_Sans_KR({
   subsets: ["latin"],
@@ -23,7 +22,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${NOTO_SANS_KR.className}`}>
-        <Header />
         {children}
         <Toaster />
       </body>

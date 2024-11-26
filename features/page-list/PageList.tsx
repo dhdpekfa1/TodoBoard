@@ -5,11 +5,22 @@ import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { ButtonOutline, SearchBar } from "@/components/ui";
 import { useAddPage, useGetPage, useGetPageList } from "@/hooks/api";
+import NavUser from "./NavUser";
+import { useAtom } from "jotai";
+import { userAtom } from "@/stores/user";
+
+// const userData = {
+//   name: "Ollin",
+//   email: "ollin@example.com",
+//   imgUrl: "/avatars/shadcn.jpg",
+//   phone: "",
+// };
 
 const PageList = () => {
   const router = useRouter();
   const [searchValue, setSearchValue] = useState("");
 
+  const [user] = useAtom(userAtom);
   const createPage = useAddPage();
   const { pages, getPageListApi } = useGetPageList();
   const { fetchPage } = useGetPage();
@@ -86,6 +97,8 @@ const PageList = () => {
           )}
         </ul>
       </div>
+
+      <NavUser user={user} />
     </aside>
   );
 };

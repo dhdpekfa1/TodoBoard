@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAtom } from "jotai";
+import { userAtom } from "@/stores/user";
 import {
   Button,
   Card,
@@ -17,12 +19,16 @@ import {
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { createClient } from "@/lib/supabase/client";
+// import { signInWithKakao } from "./api/auth";
 
 const LoginPage = () => {
   const supabase = createClient();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [, setUser] = useAtom(userAtom);
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const togglePassword = () => setShowPassword((prevState) => !prevState);
 
@@ -38,8 +44,15 @@ const LoginPage = () => {
           title: "회원가입 성공",
           description: "일정관리를 시작하세요!",
         });
-        console.log("useSignin 로그인 ", data);
         router.replace("/board");
+
+        // 전역으로 user 상태 업데이트
+        setUser({
+          id: data.user?.id || "",
+          email: data.user?.email || "",
+          phone: data.user?.phone || "",
+          imgUrl: "assets/images/logo.png",
+        });
       }
 
       if (error) {
@@ -48,7 +61,6 @@ const LoginPage = () => {
           title: "로그인 실패",
           description: error.message || "알 수 없는 오류가 발생했습니다.",
         });
-        throw error;
       }
     } catch (err) {
       console.error("Error in useSignin:", err);
@@ -59,6 +71,12 @@ const LoginPage = () => {
       });
     }
   };
+
+  // const signinWithKakao = async () => {
+  //   const res = await signInWithKakao();
+  //   if (!res) console.log(res);
+  // };
+  // const handleGoogleSignin = async () => {};
 
   return (
     <div className="page">
