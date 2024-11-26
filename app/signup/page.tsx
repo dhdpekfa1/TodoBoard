@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import useEmailCheck from "@/hooks/use-email-check";
 import {
   Button,
   Card,
@@ -19,27 +20,49 @@ import { createClient } from "@/lib/supabase/client";
 
 // TODO: email, password 조건 -> 확인 후 정상적이지 않을 때 toast
 const SignupPage = () => {
-  const supabase = createClient();
   const router = useRouter();
+  const supabase = createClient();
+  const { checkEmail } = useEmailCheck();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const togglePassword = () => setShowPassword((prevState) => !prevState);
 
   const signupWithEmail = async () => {
+    if (!email || !password) {
+      toast({
+        variant: "destructive",
+        title: "기입되지 않은 데이터(값)이 있습니다.",
+        description:
+          "이메일과 비밀번호는 필수 값입니다. 입력 후 다시 시도해주세요.",
+      });
+      return;
+    }
+
+    if (!checkEmail(email)) {
+      toast({
+        variant: "destructive",
+        title: "이메일을 다시 확인해주세요.",
+        description: "올바른 이메일 양식을 작성해주세요.",
+      });
+      return;
+    }
+
+    if (password.length < 8) {
+      toast({
+        variant: "destructive",
+        title: "비밀번호는 최소 8자 이상 입력해야 합니다.",
+        description: "소중한 정보를 지키기 위해 보안에 신경써봅시다!",
+      });
+      return;
+    }
+
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
       });
-
-      if (data) {
-        toast({
-          title: "회원가입 성공",
-          description: "로그인 후 일정관리를 시작하세요!",
-        });
-        router.push("/");
-      }
 
       if (error) {
         toast({
@@ -47,7 +70,15 @@ const SignupPage = () => {
           title: "회원가입 실패",
           description: error.message || "알 수 없는 오류가 발생했습니다.",
         });
-        throw error;
+        return;
+      }
+
+      if (data) {
+        toast({
+          title: "회원가입 성공",
+          description: "로그인 후 일정관리를 시작하세요!",
+        });
+        router.push("/");
       }
     } catch (err) {
       console.error("Error in signupWithEmail:", err);

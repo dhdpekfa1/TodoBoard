@@ -15,15 +15,19 @@ import {
   CardTitle,
   Input,
   Label,
+  ResetPasswordDialog,
 } from "@/components/ui";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { createClient } from "@/lib/supabase/client";
-// import { signInWithKakao } from "./api/auth";
+import { signInWithKakao } from "./api/auth";
+import useEmailCheck from "@/hooks/use-email-check";
 
 const LoginPage = () => {
-  const supabase = createClient();
   const router = useRouter();
+  const supabase = createClient();
+  const { checkEmail } = useEmailCheck();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -33,11 +37,39 @@ const LoginPage = () => {
   const togglePassword = () => setShowPassword((prevState) => !prevState);
 
   const signinWithEmail = async () => {
+    if (!email || !password) {
+      toast({
+        variant: "destructive",
+        title: "기입되지 않은 데이터(값)이 있습니다.",
+        description:
+          "이메일과 비밀번호는 필수 값입니다. 입력 후 다시 시도해주세요.",
+      });
+      return;
+    }
+
+    if (!checkEmail(email)) {
+      toast({
+        variant: "destructive",
+        title: "이메일을 다시 확인해주세요.",
+        description: "올바른 이메일 양식을 작성해주세요.",
+      });
+      return;
+    }
+
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
+
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "로그인 실패",
+          description: error.message || "알 수 없는 오류가 발생했습니다.",
+        });
+        return;
+      }
 
       if (data) {
         toast({
@@ -45,21 +77,13 @@ const LoginPage = () => {
           description: "일정관리를 시작하세요!",
         });
         router.replace("/board");
-
+        console.log(data);
         // 전역으로 user 상태 업데이트
         setUser({
           id: data.user?.id || "",
           email: data.user?.email || "",
           phone: data.user?.phone || "",
           imgUrl: "assets/images/logo.png",
-        });
-      }
-
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "로그인 실패",
-          description: error.message || "알 수 없는 오류가 발생했습니다.",
         });
       }
     } catch (err) {
@@ -72,11 +96,12 @@ const LoginPage = () => {
     }
   };
 
-  // const signinWithKakao = async () => {
-  //   const res = await signInWithKakao();
-  //   if (!res) console.log(res);
-  // };
-  // const handleGoogleSignin = async () => {};
+  const signinWithKakao = async () => {
+    const res = await signInWithKakao();
+    if (!res) console.log(res);
+    // TODO: User 전역 업데이트 User
+  };
+  const handleGoogleSignin = async () => {};
 
   return (
     <div className="page">
@@ -110,30 +135,36 @@ const LoginPage = () => {
                 id="email"
                 type="email"
                 placeholder="이메일을 입력하세요."
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
               />
             </div>
             <div className="relative grid gap-2">
-              <Label htmlFor="password">비밀번호</Label>
+              <div className="flex items-center">
+                <Label htmlFor="password">비밀번호</Label>
+                <ResetPasswordDialog />
+                {/* <small className="ml-auto inline-block text-sm underline">
+                  비밀번호를 잊으셨나요?
+                </small> */}
+              </div>
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="비밀번호를 입력하세요."
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 required
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
               <Button
-                size="icon"
-                className="absolute top-1/2 right-2 -translate-y-1/4 bg-transparent hover:bg-transparent"
+                size={"icon"}
+                className="absolute top-[38px] right-2 -translate-y-1/4 bg-transparent hover:bg-transparent"
                 onClick={togglePassword}
               >
                 {showPassword ? (
-                  <Eye className="h-5 w-5 text-muted-foreground" />
-                ) : (
                   <EyeOff className="h-5 w-5 text-muted-foreground" />
+                ) : (
+                  <Eye className="h-5 w-5 text-muted-foreground" />
                 )}
               </Button>
             </div>
@@ -148,13 +179,28 @@ const LoginPage = () => {
               </span>
             </div>
           </div>
-          <CardFooter className="flex flex-col mt-6">
+          <CardFooter className="flex flex-col mt-6 gap-2">
             <Button
               className="w-full text-white bg-[#517157] hover:bg-[#415c47] hover:ring-1 hover:ring-[#415c47] hover:ring-offset-1 active:bg-[#38503d] hover:shadow-lg"
               onClick={signinWithEmail}
             >
               로그인
             </Button>
+            <div className="w-full flex justify-center gap-2">
+              <Button
+                className="w-full text-[#517157] border border-[#e4eae5] bg-white hover:text-white hover:bg-[#fae100] hover:ring-1 hover:ring-[#fae100] hover:ring-offset-1 hover:shadow-lg"
+                onClick={signinWithKakao}
+              >
+                카카오 로그인
+              </Button>
+              <Button
+                className="w-full text-[#517157] border border-[#e4eae5] bg-white hover:text-white hover:bg-[#e57368] hover:ring-1 hover:ring-[#e57368] hover:ring-offset-1 hover:shadow-lg"
+                onClick={handleGoogleSignin}
+              >
+                구글 로그인
+              </Button>
+            </div>
+
             <div className="mt-4 text-center text-sm">
               계정이 없으신가요?
               <Link href={"/signup"} className="underline text-sm ml-1">

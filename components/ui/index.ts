@@ -36,6 +36,7 @@ export {
   DialogDescription,
 } from "@/components/ui/dialog/dialog";
 export { ConfirmDialog } from "@/components/ui/dialog/confirm-dialog";
+export { ResetPasswordDialog } from "@/components/ui/dialog/reset-password-dialog";
 export {
   type ToastProps,
   type ToastActionElement,
