@@ -76,8 +76,6 @@ const PageList = () => {
         <ul className="flex flex-col gap-1">
           {filteredPageData && filteredPageData.length > 0 ? (
             filteredPageData.map((data) => (
-              // {pages && pages.length > 0 ? (
-              //   pages.map((data) => (
               <li
                 key={data.id}
                 onClick={() => handlePageClick(data.id)}
