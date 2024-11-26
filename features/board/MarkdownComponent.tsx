@@ -3,7 +3,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import rehypeRaw from "rehype-raw";
-import { start } from "repl";
 
 const markdownStyles: React.CSSProperties = {
   fontFamily: "Arial, sans-serif",

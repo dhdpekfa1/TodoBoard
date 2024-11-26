@@ -89,7 +89,7 @@ const MarkdownEditorDialog = ({
               ? data?.content
               : JSON.stringify(data?.content)
           }
-          onChange={(value, viewUpdate) => setContent(value)}
+          onChange={(value) => setContent(value)}
         />
         <DialogFooter>
           <DialogClose asChild>

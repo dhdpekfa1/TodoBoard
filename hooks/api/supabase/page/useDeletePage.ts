@@ -41,7 +41,7 @@ const useDeletePage = () => {
       });
 
       console.log("Redirecting to '/'");
-      await router.push("/");
+      await router.push("/board");
       return true;
     } catch (err) {
       toast({
