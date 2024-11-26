@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
-import "@/app/styles/main.scss";
+import "@/public/styles/main.scss";
 import { Toaster } from "@/components/ui";
 import { Header } from "@/components/common";
 
@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className={`${NOTO_SANS_KR.className}`}>
         <Header />
         {children}

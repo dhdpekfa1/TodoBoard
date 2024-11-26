@@ -12,7 +12,7 @@ import {
   Separator,
 } from "@/components/ui";
 import { useToast } from "@/hooks/use-toast";
-import { BoardDataType } from "@/app/types/board";
+import { BoardContentType, BoardDataType } from "@/app/types/board";
 import { DateRangePicker } from "@/components/common";
 import { MarkdownComponent } from "./";
 import {
@@ -38,16 +38,37 @@ const CardBoard = ({ data, onUpdate }: CardBoardProps) => {
   );
   const [isChecked, setIsChecked] = useState(data.isChecked || false);
   const [isEditing, setIsEditing] = useState(false);
+  const [localContentData, setLocalContentData] = useState<BoardContentType[]>(
+    []
+  );
   const { toast } = useToast();
 
   const { contentData, fetchContent } = useGetContent();
   const createContent = useAddContent();
-  const updateContent = useUpdateContent();
+  const { updateContent } = useUpdateContent();
   const onDeleteBoard = useDeleteBoard();
 
   useEffect(() => {
-    fetchContent(Number(data.boardId));
+    const loadContent = async () => {
+      const fetchedContent = await fetchContent(Number(data.boardId));
+      if (fetchedContent) {
+        setLocalContentData(fetchedContent);
+      }
+    };
+    loadContent();
   }, [data.boardId]);
+
+  // 콘텐츠 수정 -> 업데이트
+  const handleUpdateContent = async (updatedContent: BoardContentType) => {
+    const result = await updateContent(updatedContent);
+    if (result) {
+      setLocalContentData((prev) =>
+        prev.map((content) =>
+          content.contentId === updatedContent.contentId ? result : content
+        )
+      );
+    }
+  };
 
   // 보드 저장
   const onSave = () => {
@@ -125,7 +146,7 @@ const CardBoard = ({ data, onUpdate }: CardBoardProps) => {
       </div>
 
       {/* 콘텐츠 표시 */}
-      {contentData.map((content) => (
+      {localContentData.map((content) => (
         <React.Fragment key={content.contentId}>
           <Separator className="my-3" />
           <MarkdownComponent content={content.content} />
@@ -135,8 +156,8 @@ const CardBoard = ({ data, onUpdate }: CardBoardProps) => {
       <Separator className="my-3" />
       {/* Add & Edit Content Button */}
       <MarkdownEditorDialog
-        data={contentData[0]}
-        onUpdate={updateContent}
+        data={localContentData[0]}
+        onUpdate={handleUpdateContent}
         title={title}
         isChecked={isChecked}
       >

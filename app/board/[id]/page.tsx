@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import styles from "./page.module.scss";
 import { CardBoard, PageBoard } from "@/features/board";
-import PageList from "@/features/page-list/PageList";
 import { BoardDataType } from "@/app/types/board";
 import { toast } from "@/hooks/use-toast";
 import { useAddBoard, useGetBoardList, useUpdateBoard } from "@/hooks/api";
@@ -63,7 +62,6 @@ const BoardPage = () => {
 
   return (
     <div className="page">
-      <PageList />
       <main className="page__main">
         <PageBoard
           createBoard={createBoard}

@@ -49,3 +49,4 @@ export {
 } from "@/components/ui/toast/toast";
 export { Toaster } from "@/components/ui/toast/toaster";
 export { Skeleton } from "@/components/ui/skeleton/skeleton";
+export { Label } from "@/components/ui/label/label";

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ButtonFill } from "../ui";
-import { signInWithKakao } from "@/app/api/auth";
+// import { signInWithKakao } from "@/app/api/auth";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,7 +23,11 @@ const Header = () => {
     <header className="page__header">
       {/* 로고 */}
       <div className="flex items-center gap-2">
-        <img src="images/logo.png" alt="logo img" className="w-10 h-10" />
+        <img
+          src="public/assets/images/logo.png"
+          alt="logo img"
+          className="w-10 h-10"
+        />
         <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight color-[#222]">
           Todo Board
         </h2>
