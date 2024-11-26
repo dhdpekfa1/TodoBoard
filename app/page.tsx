@@ -1,3 +1,8 @@
+"use client";
+
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   Button,
   Card,
@@ -9,12 +14,51 @@ import {
   Input,
   Label,
 } from "@/components/ui";
-import { Eye } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import { createClient } from "@/lib/supabase/client";
 
 const LoginPage = () => {
-  // const handleLogin = () => {};
+  const supabase = createClient();
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const togglePassword = () => setShowPassword((prevState) => !prevState);
+
+  const signinWithEmail = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (data) {
+        toast({
+          title: "회원가입 성공",
+          description: "일정관리를 시작하세요!",
+        });
+        console.log("useSignin 로그인 ", data);
+        router.replace("/board");
+      }
+
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "로그인 실패",
+          description: error.message || "알 수 없는 오류가 발생했습니다.",
+        });
+        throw error;
+      }
+    } catch (err) {
+      console.error("Error in useSignin:", err);
+      toast({
+        variant: "destructive",
+        title: err,
+        description: "서버와 연결할 수 없습니다. 다시 시도해주세요.",
+      });
+    }
+  };
 
   return (
     <div className="page">
@@ -48,29 +92,31 @@ const LoginPage = () => {
                 id="email"
                 type="email"
                 placeholder="이메일을 입력하세요."
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             <div className="relative grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">비밀번호</Label>
-                <Link
-                  href={"#"}
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  비밀번호를 잊으셨나요?
-                </Link>
-              </div>
+              <Label htmlFor="password">비밀번호</Label>
               <Input
                 id="password"
-                type={"password"}
+                type={showPassword ? "text" : "password"}
                 placeholder="비밀번호를 입력하세요."
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <Button
                 size="icon"
-                className="absolute top-[38px] right-2 -translate-y-1/4 bg-transparent hover:bg-transparent"
+                className="absolute top-1/2 right-2 -translate-y-1/4 bg-transparent hover:bg-transparent"
+                onClick={togglePassword}
               >
-                <Eye className="h-5 w-5 text-muted-foreground" />
+                {showPassword ? (
+                  <Eye className="h-5 w-5 text-muted-foreground" />
+                ) : (
+                  <EyeOff className="h-5 w-5 text-muted-foreground" />
+                )}
               </Button>
             </div>
           </CardContent>
@@ -85,7 +131,10 @@ const LoginPage = () => {
             </div>
           </div>
           <CardFooter className="flex flex-col mt-6">
-            <Button className="w-full text-white bg-[#517157] hover:bg-[#415c47] hover:ring-1 hover:ring-[#415c47] hover:ring-offset-1 active:bg-[#38503d] hover:shadow-lg">
+            <Button
+              className="w-full text-white bg-[#517157] hover:bg-[#415c47] hover:ring-1 hover:ring-[#415c47] hover:ring-offset-1 active:bg-[#38503d] hover:shadow-lg"
+              onClick={signinWithEmail}
+            >
               로그인
             </Button>
             <div className="mt-4 text-center text-sm">
