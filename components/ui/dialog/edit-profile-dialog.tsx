@@ -27,7 +27,6 @@ const EditProfileDialog = ({ children }: { children: React.ReactNode }) => {
   );
   const [nickname, setNickname] = useState<string>(user?.nickname || "");
 
-  // TODO: table 업데이트 안됨 확인
   const updateUserInfo = async () => {
     try {
       const user = await supabase.auth.getUser(); // 로그인된 사용자의 정보

@@ -1,14 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { useGetContent } from "./useGetContent";
 import { BoardContentType } from "@/app/types/board";
-import { useState } from "react";
 
 // TODO: 콘텐츠 생성 후 바로 해당 콘텐츠 못 찾고 새로고침 후에만 확인됨
 // CardBoard로직까지 수정 필요
 const useUpdateContent = () => {
   const supabase = createClient();
+  const { fetchContent, contentData: fetchedContentData } = useGetContent();
   const [contentData, setContentData] = useState<BoardContentType[]>([]);
 
   const updateContent = async (

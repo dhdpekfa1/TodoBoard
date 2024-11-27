@@ -1,9 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { BoardContentType } from "@/app/types/board";
-import { useState } from "react";
 
 const useGetContent = () => {
   const supabase = createClient();

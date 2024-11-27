@@ -26,8 +26,8 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
   const [isEditing, setIsEditing] = useState(false);
-  const router = useRouter();
 
+  const router = useRouter();
   const { page, fetchPage } = useGetPage();
   const updatePage = useUpdatePage();
   const onDelete = useDeletePage();
@@ -38,7 +38,7 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
 
   useEffect(() => {
     if (page) {
-      setTitle(page.title || "");
+      setTitle(page.title);
       setStartDate(page.startDate ? new Date(page.startDate) : undefined);
       setEndDate(page.endDate ? new Date(page.endDate) : undefined);
     }

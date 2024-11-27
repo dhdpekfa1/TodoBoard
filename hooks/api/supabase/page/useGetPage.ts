@@ -40,7 +40,14 @@ const useGetPage = () => {
       }
 
       const pageData = data?.[0] || null;
-      setPage(pageData);
+      const { id, title, start_date, end_date } = pageData;
+      setPage({
+        id,
+        title,
+        startDate: start_date,
+        endDate: end_date,
+      });
+
       return pageData;
     } catch (err) {
       console.error("Error in useGetPage:", err);
