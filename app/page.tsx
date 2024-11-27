@@ -75,7 +75,7 @@ const LoginPage = () => {
 
       // 로그인 성공 처리
       if (data?.user) {
-        const { id, email, phone } = data.user;
+        const { sub, email, nickname, phone_number } = data.user.user_metadata;
 
         toast({
           title: "로그인 성공",
@@ -84,11 +84,13 @@ const LoginPage = () => {
 
         // cookie에 저장
         const userData = {
-          id: id || "",
+          id: sub || "",
           email: email || "",
-          phoneNumber: phone || "",
+          phoneNumber: phone_number || "",
+          nickname,
           imgUrl: "/assets/images/profile.jpg",
         };
+
         document.cookie = `user=${JSON.stringify(
           userData
         )}; path=/; max-age=3600`; // 1시간 동안 유효
