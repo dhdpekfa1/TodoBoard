@@ -82,17 +82,22 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
 
   return (
     <div className="w-full p-5 flex flex-col bg-white">
-      <div className="flex items-center gap-2 bg-white">
+      <div className="flex items-center justify-between gap-2 bg-white">
         <Button variant={"outline"} onClick={() => router.back()}>
           <ChevronLeft />
         </Button>
-        {isEditing ? (
-          <ButtonOutline onClick={onSave}>저장</ButtonOutline>
-        ) : (
-          <ButtonOutline onClick={() => setIsEditing(true)}>수정</ButtonOutline>
-        )}
-        <ConfirmDialog onClick={() => onDelete(pageId)} />
+        <div className="flex items-center gap-4">
+          {isEditing ? (
+            <ButtonFill onClick={onSave}>저장</ButtonFill>
+          ) : (
+            <ButtonOutline onClick={() => setIsEditing(true)}>
+              수정
+            </ButtonOutline>
+          )}
+          <ConfirmDialog onClick={() => onDelete(pageId)} />
+        </div>
       </div>
+
       <div className="w-full flex flex-col gap-4 mt-4">
         {/* 제목 input */}
         <input
@@ -120,8 +125,8 @@ const PageBoard = ({ pageId, boardData, createBoard }: PageBoardProps) => {
             setEndDate={setEndDate}
             isEditing={isEditing}
           />
-          <ButtonFill onClick={createBoard}>Add New Board</ButtonFill>
         </div>
+        <ButtonOutline onClick={createBoard}>Add New Board</ButtonOutline>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { ButtonOutline, SearchBar } from "@/components/ui";
 import { useAddPage, useGetPage, useGetPageList } from "@/hooks/api";
@@ -11,6 +11,7 @@ import { userAtom } from "@/stores/user";
 
 const PageList = () => {
   const router = useRouter();
+  const { id } = useParams();
   const [searchValue, setSearchValue] = useState("");
 
   const [user] = useAtom(userAtom);
@@ -66,7 +67,7 @@ const PageList = () => {
       <ButtonOutline onClick={createPage}>Add New Page</ButtonOutline>
       <div className="flex flex-col mt-4 gap-2">
         <small className="text-sm font-medium leading-none text-[#a6a6a6]">
-          {`Ollin's`}
+          {user?.nickname ? user.nickname : "your"}'s Todo Board
         </small>
         <ul className="flex flex-col gap-1">
           {filteredPageData && filteredPageData.length > 0 ? (
@@ -74,7 +75,9 @@ const PageList = () => {
               <li
                 key={data.id}
                 onClick={() => handlePageClick(data.id)}
-                className="flex items-center gap-2 py-2 px-[10px] bg-[#f5f5f5] text-sm cursor-pointer"
+                className={`${
+                  data.id === Number(id) ? "bg-[#efefef]" : "bg-[#fbfbfd]"
+                } min-h-9 flex items-center gap-2 py-2 px-[10px] rounded-sm text-sm cursor-pointer`}
               >
                 <div className="bg-[#00f38d] w-2 h-2 rounded-full" />
                 {data.title && data.title.length > 12

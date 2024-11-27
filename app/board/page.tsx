@@ -2,7 +2,6 @@
 
 import { ButtonOutline } from "@/components/ui";
 import { useAddPage } from "@/hooks/api";
-import { useEffect } from "react";
 
 const BoardDetailPage = () => {
   const createPage = useAddPage();

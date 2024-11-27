@@ -55,7 +55,10 @@ const NavUser = ({ user }: { user: User | null }) => {
           className="py-6 px-3 flex items-center justify-evenly"
         >
           <Avatar className="h-8 w-8 rounded-lg">
-            <AvatarImage src={user?.imgUrl} alt={"user img"} />
+            <AvatarImage
+              src={"https://github.com/shadcn.png"}
+              alt={"user img"}
+            />
             <AvatarFallback className="rounded-lg">CN</AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
@@ -74,7 +77,10 @@ const NavUser = ({ user }: { user: User | null }) => {
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarImage src={user?.imgUrl} alt={"user img"} />
+              <AvatarImage
+                src={"https://github.com/shadcn.png"}
+                alt={"user img"}
+              />
               <AvatarFallback className="rounded-lg">CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">

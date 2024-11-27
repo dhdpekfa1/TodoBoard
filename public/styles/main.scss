@@ -30,6 +30,11 @@
     background-color: #fff;
     border-left: 1px solid #efefef;
     border-right: 1px solid #efefef;
+
+    & ul {
+      flex-grow: 1;
+      overflow-y: auto;
+    }
   }
 
   &__main {
