@@ -67,7 +67,7 @@ const PageList = () => {
       <ButtonOutline onClick={createPage}>Add New Page</ButtonOutline>
       <div className="flex flex-col mt-4 gap-2">
         <small className="text-sm font-medium leading-none text-[#a6a6a6]">
-          {user?.nickname ? user.nickname : "your"}'s Todo Board
+          {user?.nickname ? user.nickname : "user"}'s Todo Board
         </small>
         <ul className="flex flex-col gap-1">
           {filteredPageData && filteredPageData.length > 0 ? (

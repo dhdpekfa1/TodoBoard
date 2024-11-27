@@ -56,8 +56,6 @@ const BoardPage = () => {
       console.error("Failed to update board.");
       return;
     }
-
-    console.log("Board updated successfully.");
   };
 
   return (

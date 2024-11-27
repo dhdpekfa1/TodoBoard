@@ -32,15 +32,12 @@ const EditProfileDialog = ({ children }: { children: React.ReactNode }) => {
     try {
       const user = await supabase.auth.getUser(); // 로그인된 사용자의 정보
 
-      console.log("user ", user);
-
       if (user.data) {
         const { data, error } = await supabase.auth.updateUser({
           data: { nickname, phone_number: phoneNumber },
         });
 
         if (error) {
-          console.log("user Data", user.data);
           toast({
             variant: "destructive",
             title: "에러가 발생했습니다.",

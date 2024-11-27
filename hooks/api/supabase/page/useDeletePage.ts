@@ -10,8 +10,6 @@ const useDeletePage = () => {
 
   const deletePage = async (pageId: number) => {
     try {
-      console.log("Page ID to delete:", pageId);
-
       if (!pageId || typeof pageId !== "number") {
         console.error("Invalid Page ID:", pageId);
         toast({
@@ -41,7 +39,6 @@ const useDeletePage = () => {
         description: "페이지를 성공적으로 삭제했습니다.",
       });
 
-      console.log("Redirecting to '/'");
       await router.push("/board");
       return true;
     } catch (err) {

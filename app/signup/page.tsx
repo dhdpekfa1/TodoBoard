@@ -18,7 +18,6 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { createClient } from "@/lib/supabase/client";
 
-// TODO: email, password 조건 -> 확인 후 정상적이지 않을 때 toast
 const SignupPage = () => {
   const router = useRouter();
   const supabase = createClient();
