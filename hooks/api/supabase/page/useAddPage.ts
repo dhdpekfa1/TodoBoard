@@ -4,10 +4,11 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { pagesAtom } from "@/stores/atoms";
 import { userAtom } from "@/stores/user";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 const useAddPage = () => {
+  const supabase = createClient();
   const [user] = useAtom(userAtom);
   const [, setPages] = useAtom(pagesAtom);
   const router = useRouter();

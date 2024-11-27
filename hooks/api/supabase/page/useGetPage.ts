@@ -3,10 +3,11 @@
 import { useAtom } from "jotai";
 import { pageAtom } from "@/stores/atoms";
 import { userAtom } from "@/stores/user";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 const useGetPage = () => {
+  const supabase = createClient();
   const [user] = useAtom(userAtom);
   const [page, setPage] = useAtom(pageAtom);
 

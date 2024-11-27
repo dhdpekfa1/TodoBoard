@@ -3,7 +3,7 @@
 import { ChangeEvent, useState } from "react";
 import { useAtom } from "jotai";
 import { userAtom } from "@/stores/user";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -21,57 +21,47 @@ import {
 
 const EditProfileDialog = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useAtom(userAtom);
+  const supabase = createClient();
   const [phoneNumber, setPhoneNumber] = useState<string>(
     user?.phoneNumber || ""
   );
   const [nickname, setNickname] = useState<string>(user?.nickname || "");
 
-  // TODO: DB 업데이트 안됨(오류 발생)
+  // TODO: table 업데이트 안됨 확인
   const updateUserInfo = async () => {
     try {
-      const user = await supabase.auth.getUser();
+      const user = await supabase.auth.getUser(); // 로그인된 사용자의 정보
 
-      if (!nickname) {
-        toast({
-          variant: "destructive",
-          title: "닉네임 누락",
-          description: "닉네임을 입력해주세요.",
+      console.log("user ", user);
+
+      if (user.data) {
+        const { data, error } = await supabase.auth.updateUser({
+          data: { nickname, phone_number: phoneNumber },
         });
-        return;
+
+        if (error) {
+          console.log("user Data", user.data);
+          toast({
+            variant: "destructive",
+            title: "에러가 발생했습니다.",
+            description: `Supabase 오류: ${error.message || "알 수 없는 오류"}`,
+          });
+        } else if (data && !error) {
+          toast({
+            title: "프로필 수정을 완료하였습니다.",
+          });
+          const updatedUserData = {
+            id: data.user?.id || "",
+            email: data.user?.email || "",
+            phoneNumber: data.user?.user_metadata.phone_number || "",
+            nickname: data.user?.user_metadata.nickname || "",
+            imgUrl: "/assets/images/profile.jpg",
+          };
+          setUser(updatedUserData);
+        }
       }
-
-      const { data, error } = await supabase.auth.updateUser({
-        data: {
-          user_metadata: {
-            nickname: nickname,
-            phone_number: phoneNumber,
-          },
-        },
-      });
-
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "에러가 발생했습니다.",
-          description: `Supabase 오류: ${error.message || "알 수 없는 오류"}`,
-        });
-      } else if (data && !error) {
-        toast({
-          title: "프로필 수정을 완료하였습니다.",
-        });
-
-        console.log("Updated user data:", data);
-
-        const updatedUserData = {
-          id: data.user?.id || "",
-          email: data.user?.email || "",
-          phoneNumber: data.user?.user_metadata?.phone_number || "",
-          nickname: data.user?.user_metadata?.nickname || "",
-          imgUrl: "/assets/images/profile.jpg",
-        };
-        setUser(updatedUserData);
-      }
-    } catch (err) {
+    } catch (error) {
+      console.error(error);
       toast({
         variant: "destructive",
         title: "네트워크 오류",

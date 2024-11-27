@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 export async function middleware(request: NextRequest) {
+  const supabase = createClient();
   const url = request.nextUrl.clone();
   const pathname = url.pathname;
 

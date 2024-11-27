@@ -1,11 +1,12 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { boardsAtom } from "@/stores/atoms";
 import { toast } from "@/hooks/use-toast";
 
 const useDeleteBoard = () => {
+  const supabase = createClient();
   const [, setBoards] = useAtom(boardsAtom);
 
   const deleteBoard = async (boardId: number): Promise<boolean> => {

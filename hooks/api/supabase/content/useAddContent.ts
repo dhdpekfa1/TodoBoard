@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { BoardContentType } from "@/app/types/board";
 
 const useAddContent = () => {
+  const supabase = createClient();
   const [, setContentData] = useState<BoardContentType[]>([]);
 
   const addContent = async (

@@ -1,12 +1,13 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { useAtom } from "jotai";
 import { pagesAtom } from "@/stores/atoms";
 import { userAtom } from "@/stores/user";
 import { toast } from "@/hooks/use-toast";
 
 const useGetPageList = () => {
+  const supabase = createClient();
   const [user] = useAtom(userAtom);
   const [pages, setPages] = useAtom(pagesAtom);
 

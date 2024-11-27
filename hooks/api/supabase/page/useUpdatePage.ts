@@ -2,11 +2,12 @@
 
 import { useAtom } from "jotai";
 import { pageAtom } from "@/stores/atoms";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { PageDataType } from "@/app/types/board";
 
 const useUpdatePage = () => {
+  const supabase = createClient();
   const [, setPage] = useAtom(pageAtom);
 
   const updatePageApi = async (updatedPage: PageDataType): Promise<boolean> => {

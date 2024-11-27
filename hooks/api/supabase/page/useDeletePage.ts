@@ -1,11 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 const useDeletePage = () => {
   const router = useRouter();
+  const supabase = createClient();
 
   const deletePage = async (pageId: number) => {
     try {
