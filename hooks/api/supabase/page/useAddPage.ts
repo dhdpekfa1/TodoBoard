@@ -3,15 +3,26 @@
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { pagesAtom } from "@/stores/atoms";
+import { userAtom } from "@/stores/user";
 import { supabase } from "@/lib/supabase";
 import { toast } from "@/hooks/use-toast";
 
 const useAddPage = () => {
+  const [user] = useAtom(userAtom);
   const [, setPages] = useAtom(pagesAtom);
   const router = useRouter();
 
   const addPageApi = async () => {
     try {
+      if (!user?.id) {
+        toast({
+          variant: "destructive",
+          title: "로그인 상태 확인 필요",
+          description: "로그인 후 페이지를 생성할 수 있습니다.",
+        });
+        return;
+      }
+
       const { data, status, error } = await supabase
         .from("pages")
         .insert([
@@ -19,6 +30,7 @@ const useAddPage = () => {
             title: null,
             start_date: null,
             end_date: null,
+            user_uid: user.id,
           },
         ])
         .select();

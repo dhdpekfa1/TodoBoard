@@ -19,8 +19,10 @@ const PageList = () => {
   const { fetchPage } = useGetPage();
 
   useEffect(() => {
-    getPageListApi();
-  }, [pages]);
+    if (user?.id) {
+      getPageListApi(); // 사용자 ID가 있을 때만 호출
+    }
+  }, [user?.id]); // user.id가 변경될 때만 호출
 
   const handlePageClick = async (id: number) => {
     const res = await fetchPage(id);

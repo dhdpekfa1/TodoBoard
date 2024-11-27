@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { useSetAtom } from "jotai";
 import { userAtom } from "@/stores/user";
+import { pagesAtom } from "@/stores/atoms";
 import { createClient } from "@/lib/supabase/client";
 import {
   BadgeCheck,
@@ -32,6 +33,7 @@ import { User } from "@/app/types/user";
 const NavUser = ({ user }: { user: User | null }) => {
   const supabase = createClient();
   const setUser = useSetAtom(userAtom);
+  const setPages = useSetAtom(pagesAtom);
 
   const router = useRouter();
 
@@ -45,7 +47,10 @@ const NavUser = ({ user }: { user: User | null }) => {
       });
     }
 
-    setUser(null); // 로그아웃 성공 시 userAtom을 null로 설정
+    // 로그아웃 성공 시 스토리지에 저장된 값을 null로 설정
+    setUser(null);
+    localStorage.removeItem("page_list");
+    setPages([]);
     toast({
       title: "로그아웃 완료",
       description: "일정 관리 앱을 사용해주셔서 감사합니다.",

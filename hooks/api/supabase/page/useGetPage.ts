@@ -17,10 +17,10 @@ const useGetPage = () => {
       if (!userUid) {
         toast({
           variant: "destructive",
-          title: "유저 인증 실패",
-          description: "로그인 상태를 확인해주세요.",
+          title: "잘못된 접근입니다.",
+          description: "본인이 작성한 일정만 확인할 수 있습니다.",
         });
-        return null;
+        return;
       }
 
       const { data, error } = await supabase

@@ -1,16 +1,30 @@
 "use client";
 
+import { supabase } from "@/lib/supabase";
 import { useAtom } from "jotai";
 import { pagesAtom } from "@/stores/atoms";
-import { supabase } from "@/lib/supabase";
+import { userAtom } from "@/stores/user";
 import { toast } from "@/hooks/use-toast";
 
 const useGetPageList = () => {
+  const [user] = useAtom(userAtom);
   const [pages, setPages] = useAtom(pagesAtom);
 
   const getPageListApi = async () => {
     try {
-      const { data, status, error } = await supabase.from("pages").select("*");
+      if (!user?.id) {
+        toast({
+          variant: "destructive",
+          title: "로그인 상태를 확인하세요.",
+          description: "로그인 후 페이지를 불러올 수 있습니다.",
+        });
+        return;
+      }
+
+      const { data, status, error } = await supabase
+        .from("pages")
+        .select("*")
+        .eq("user_uid", user.id);
 
       if (data && status === 200) {
         setPages(data);
