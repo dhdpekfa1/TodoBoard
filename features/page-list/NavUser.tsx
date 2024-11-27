@@ -55,6 +55,7 @@ const NavUser = ({ user }: { user: User | null }) => {
       title: "로그아웃 완료",
       description: "일정 관리 앱을 사용해주셔서 감사합니다.",
     });
+    document.cookie = `user=; path=/; max-age=0`; // 쿠키 삭제
     router.replace("/");
   };
 

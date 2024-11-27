@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAtom } from "jotai";
@@ -81,14 +81,19 @@ const LoginPage = () => {
           description: "일정관리를 시작하세요!",
         });
 
-        // 전역 상태 업데이트
-        setUser({
-          id: id || "",
-          email: email || "",
-          phone: phone || "",
-          imgUrl: "assets/images/logo.png",
-        });
+        // cookie에 저장
+        const userData = {
+          id: data.user?.id || "",
+          email: data.user?.email || "",
+          phone: data.user?.phone || "",
+          imgUrl: "/assets/images/profile.jpg",
+        };
+        document.cookie = `user=${JSON.stringify(
+          userData
+        )}; path=/; max-age=3600`; // 1시간 동안 유효
 
+        // 전역 상태 업데이트
+        setUser(userData);
         router.replace("/board");
       } else {
         toast({
