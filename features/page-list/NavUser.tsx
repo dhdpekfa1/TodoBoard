@@ -2,18 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
-import { useSetAtom } from "jotai";
-import { userAtom } from "@/stores/user";
-import { pagesAtom } from "@/stores/atoms";
 import { createClient } from "@/lib/supabase/client";
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from "lucide-react";
+import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
@@ -26,14 +16,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  EditProfileDialog,
 } from "@/components/ui";
 
 import { User } from "@/app/types/user";
 
 const NavUser = ({ user }: { user: User | null }) => {
   const supabase = createClient();
-  const setUser = useSetAtom(userAtom);
-  const setPages = useSetAtom(pagesAtom);
 
   const router = useRouter();
 
@@ -47,15 +36,14 @@ const NavUser = ({ user }: { user: User | null }) => {
       });
     }
 
-    // 로그아웃 성공 시 스토리지에 저장된 값을 null로 설정
-    setUser(null);
+    // 로그아웃 성공 시 store 초기화
+    localStorage.removeItem("user");
     localStorage.removeItem("page_list");
-    setPages([]);
+    document.cookie = `user=; path=/; max-age=0`; // 쿠키 삭제
     toast({
       title: "로그아웃 완료",
       description: "일정 관리 앱을 사용해주셔서 감사합니다.",
     });
-    document.cookie = `user=; path=/; max-age=0`; // 쿠키 삭제
     router.replace("/");
   };
 
@@ -71,7 +59,7 @@ const NavUser = ({ user }: { user: User | null }) => {
             <AvatarFallback className="rounded-lg">CN</AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-semibold">Ollin</span>
+            <span className="truncate font-semibold">{user?.nickname}</span>
             <span className="truncate text-xs">{user?.email}</span>
           </div>
           <ChevronsUpDown className="ml-auto size-4" />
@@ -97,25 +85,16 @@ const NavUser = ({ user }: { user: User | null }) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Sparkles />
-            Upgrade to Pro
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BadgeCheck />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard />
-            Billing
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell />
-            Notifications
-          </DropdownMenuItem>
+          <EditProfileDialog>
+            <DropdownMenuItem
+              onSelect={(event) => {
+                event.preventDefault();
+              }}
+            >
+              <BadgeCheck />
+              Account
+            </DropdownMenuItem>
+          </EditProfileDialog>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>

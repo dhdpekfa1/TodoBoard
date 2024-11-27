@@ -10,7 +10,7 @@ const NOTO_SANS_KR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Todo Project",
+  title: "Todo Board",
   description: "Shadcn UI + Next.js TODO-BOARD 만들기",
 };
 
