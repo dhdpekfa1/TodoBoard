@@ -25,15 +25,14 @@ const ResetPasswordDialog = ({ children }: { children: React.ReactNode }) => {
   const handleResetPassword = async () => {
     try {
       await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "http://localhost:3000/reset-password",
+        redirectTo: "http://localhost:3000/password-setting",
       });
       toast({
-        title: "비밀번호 초기화 이메일을 전송했습니다.",
+        title: "비밀번호 재설정 이메일을 전송했습니다.",
         description:
           "이메일 주소로 비밀번호 초기화 링크를 전송했습니다. 이메일을 확인하여 비밀번호를 변경하세요.",
       });
     } catch (error) {
-      /** 네트워크 오류나 예기치 않은 에러를 잡기 위해 catch 구문 사용 */
       console.error(error);
       toast({
         variant: "destructive",
@@ -49,7 +48,8 @@ const ResetPasswordDialog = ({ children }: { children: React.ReactNode }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>비밀번호를 잊으셨나요?</AlertDialogTitle>
           <AlertDialogDescription>
-            비밀번호 초기화를 위해 본인의 이메일 주소를 하단에 기입해주세요.
+            비밀번호 초기화를 위해 계정 생성 시 작성한 <br />
+            본인의 이메일 주소를 하단에 기입해주세요.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="grid gap-2">
