@@ -160,16 +160,11 @@ const CardBoard = ({ data, onUpdate }: CardBoardProps) => {
         onUpdate={handleUpdateContent}
         title={title}
         isChecked={isChecked}
+        boardId={Number(data.boardId)}
       >
         <Button
           variant={"ghost"}
           className="w-full font-normal text-[rgb(109,109,109)]"
-          onClick={() =>
-            createContent(
-              Number(data.boardId),
-              Number(contentData[0]?.contentId)
-            )
-          }
         >
           {contentData.length > 0 ? "Edit Content" : "Add Contents"}
         </Button>

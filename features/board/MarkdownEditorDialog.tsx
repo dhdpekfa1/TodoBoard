@@ -16,12 +16,14 @@ import {
   Separator,
 } from "@/components/ui";
 import { BoardContentType } from "@/app/types/board";
+import { useAddContent } from "@/hooks/api";
 
 export interface MarkdownEditorDialogProp {
   children: ReactNode;
   data: BoardContentType | undefined;
   title: string;
   isChecked: boolean;
+  boardId: number;
   onUpdate: (updatedBoard: BoardContentType) => void;
 }
 
@@ -30,8 +32,10 @@ const MarkdownEditorDialog = ({
   data,
   title,
   isChecked,
+  boardId,
   onUpdate,
 }: MarkdownEditorDialogProp) => {
+  const addContent = useAddContent();
   const [content, setContent] = useState<string>(data?.content || "");
 
   useEffect(() => {
@@ -40,7 +44,8 @@ const MarkdownEditorDialog = ({
     }
   }, [data]);
 
-  const onSave = () => {
+  // TODO: 처음 등록 후 콘텐츠 생성은 되는데 UI에 바로 반영x -> 콘텐츠 중복 생성 가능
+  const onSave = async () => {
     try {
       if (!content) {
         toast({
@@ -51,17 +56,30 @@ const MarkdownEditorDialog = ({
         return;
       }
 
-      if (!data) {
-        console.error("데이터가 없습니다.");
-        return;
+      if (data) {
+        // 콘텐츠가 이미 있을 경우 업데이트 호출
+        onUpdate({
+          ...data,
+          content,
+        });
+      } else {
+        // 콘텐츠가 없을 경우 추가 호출
+        const newContent = await addContent(boardId, undefined, content);
+        if (newContent) {
+          toast({
+            title: "콘텐츠 추가 성공",
+            description: "새 콘텐츠가 성공적으로 추가되었습니다.",
+          });
+          onUpdate(newContent);
+        }
       }
-
-      onUpdate({
-        ...data,
-        content,
-      });
     } catch (err) {
-      console.error(err);
+      console.error("Error in MarkdownEditorDialog onSave:", err);
+      toast({
+        variant: "destructive",
+        title: "네트워크 오류",
+        description: "서버와 연결할 수 없습니다. 다시 시도해주세요.",
+      });
     }
   };
 
@@ -97,13 +115,9 @@ const MarkdownEditorDialog = ({
               취소
             </Button>
           </DialogClose>
-          {content ? (
-            <DialogClose asChild>
-              <ButtonFill onClick={onSave}>등록</ButtonFill>
-            </DialogClose>
-          ) : (
+          <DialogClose asChild>
             <ButtonFill onClick={onSave}>등록</ButtonFill>
-          )}
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
