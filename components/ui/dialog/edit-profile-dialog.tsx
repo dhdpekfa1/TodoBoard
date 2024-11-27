@@ -3,6 +3,8 @@
 import { ChangeEvent, useState } from "react";
 import { useAtom } from "jotai";
 import { userAtom } from "@/stores/user";
+import { supabase } from "@/lib/supabase";
+import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -19,12 +21,63 @@ import {
 
 const EditProfileDialog = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useAtom(userAtom);
-
-  const [phoneNumber, setPhoneNumber] = useState<string>(user?.phone || "");
+  const [phoneNumber, setPhoneNumber] = useState<string>(
+    user?.phoneNumber || ""
+  );
   const [nickname, setNickname] = useState<string>(user?.nickname || "");
 
-  const handleSave = () => {
-    // TODO: 프로필 변경 적용(저장)
+  // TODO: DB 업데이트 안됨(오류 발생)
+  const updateUserInfo = async () => {
+    try {
+      const user = await supabase.auth.getUser();
+
+      if (!nickname) {
+        toast({
+          variant: "destructive",
+          title: "닉네임 누락",
+          description: "닉네임을 입력해주세요.",
+        });
+        return;
+      }
+
+      const { data, error } = await supabase.auth.updateUser({
+        data: {
+          user_metadata: {
+            nickname: nickname,
+            phone_number: phoneNumber,
+          },
+        },
+      });
+
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "에러가 발생했습니다.",
+          description: `Supabase 오류: ${error.message || "알 수 없는 오류"}`,
+        });
+      } else if (data && !error) {
+        toast({
+          title: "프로필 수정을 완료하였습니다.",
+        });
+
+        console.log("Updated user data:", data);
+
+        const updatedUserData = {
+          id: data.user?.id || "",
+          email: data.user?.email || "",
+          phoneNumber: data.user?.user_metadata?.phone_number || "",
+          nickname: data.user?.user_metadata?.nickname || "",
+          imgUrl: "/assets/images/profile.jpg",
+        };
+        setUser(updatedUserData);
+      }
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "네트워크 오류",
+        description: "서버와 연결할 수 없습니다. 다시 시도해주세요!",
+      });
+    }
   };
 
   const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +111,7 @@ const EditProfileDialog = ({ children }: { children: React.ReactNode }) => {
         <div className="grid gap-4">
           <div className="flex flex-col gap-2">
             <Label htmlFor="email">이메일</Label>
-            <Input id="email" type="email" required value={user?.email} />
+            <Input id="email" type="email" disabled value={user?.email} />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="email">닉네임</Label>
@@ -77,7 +130,6 @@ const EditProfileDialog = ({ children }: { children: React.ReactNode }) => {
               id="phone"
               type="text"
               placeholder="핸드폰 번호를 입력해주세요."
-              required
               value={phoneNumber}
               onChange={handlePhoneNumberChange}
             />
@@ -87,7 +139,7 @@ const EditProfileDialog = ({ children }: { children: React.ReactNode }) => {
           <AlertDialogCancel>취소</AlertDialogCancel>
           <AlertDialogAction
             className="text-white bg-[#517157] hover:bg-[#415c47] hover:ring-offset-1 active:bg-[#38503d] hover:shadow-lg"
-            onClick={handleSave}
+            onClick={updateUserInfo}
           >
             저장
           </AlertDialogAction>

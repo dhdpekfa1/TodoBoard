@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { createClient } from "@/lib/supabase/client";
-import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
+import { ChevronsUpDown, LogOut, User2 } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
@@ -84,7 +84,7 @@ const NavUser = ({ user }: { user: User | null }) => {
               <AvatarFallback className="rounded-lg">CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-semibold">Ollin</span>
+              <span className="truncate font-semibold">{user?.nickname}</span>
               <span className="truncate text-xs">{user?.email}</span>
             </div>
           </div>
@@ -97,7 +97,7 @@ const NavUser = ({ user }: { user: User | null }) => {
                 event.preventDefault();
               }}
             >
-              <BadgeCheck />
+              <User2 />
               Account
             </DropdownMenuItem>
           </EditProfileDialog>

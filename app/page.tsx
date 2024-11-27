@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAtom } from "jotai";
@@ -20,7 +20,8 @@ import {
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { createClient } from "@/lib/supabase/client";
-import { signInWithKakao } from "./api/auth";
+
+// import { signInWithKakao } from "./api/auth";
 import useEmailCheck from "@/hooks/use-email-check";
 
 const LoginPage = () => {
@@ -83,9 +84,9 @@ const LoginPage = () => {
 
         // cookie에 저장
         const userData = {
-          id: data.user?.id || "",
-          email: data.user?.email || "",
-          phone: data.user?.phone || "",
+          id: id || "",
+          email: email || "",
+          phoneNumber: phone || "",
           imgUrl: "/assets/images/profile.jpg",
         };
         document.cookie = `user=${JSON.stringify(
@@ -115,38 +116,38 @@ const LoginPage = () => {
     }
   };
 
-  const signinWithKakao = async () => {
-    try {
-      const res = await signInWithKakao();
-      if (res?.data) {
-        toast({
-          title: "카카오 로그인 성공",
-          description: "환영합니다!",
-        });
+  // const signinWithKakao = async () => {
+  //   try {
+  //     const res = await signInWithKakao();
+  //     if (res?.data) {
+  //       toast({
+  //         title: "카카오 로그인 성공",
+  //         description: "환영합니다!",
+  //       });
 
-        setUser({
-          id: res.data.id,
-          email: res.data.email,
-          phone: res.data.phone || "",
-          imgUrl: res.data.profileImage || "assets/images/logo.png",
-        });
+  //       setUser({
+  //         id: res.data.id,
+  //         email: res.data.email,
+  //         phone: res.data.phone || "",
+  //         imgUrl: res.data.profileImage || "assets/images/logo.png",
+  //       });
 
-        router.replace("/board");
-      } else {
-        throw new Error("카카오 로그인 실패");
-      }
-    } catch (err) {
-      console.error("Error in signinWithKakao:", err);
-      toast({
-        variant: "destructive",
-        title: "카카오 로그인 실패",
-        description:
-          err instanceof Error
-            ? err.message
-            : "카카오 인증 중 문제가 발생했습니다.",
-      });
-    }
-  };
+  //       router.replace("/board");
+  //     } else {
+  //       throw new Error("카카오 로그인 실패");
+  //     }
+  //   } catch (err) {
+  //     console.error("Error in signinWithKakao:", err);
+  //     toast({
+  //       variant: "destructive",
+  //       title: "카카오 로그인 실패",
+  //       description:
+  //         err instanceof Error
+  //           ? err.message
+  //           : "카카오 인증 중 문제가 발생했습니다.",
+  //     });
+  //   }
+  // };
   const handleGoogleSignin = async () => {
     toast({
       variant: "default",
@@ -242,7 +243,7 @@ const LoginPage = () => {
             <div className="w-full flex justify-center gap-2">
               <Button
                 className="w-full text-[#517157] border border-[#e4eae5] bg-white hover:text-white hover:bg-[#fae100] hover:ring-1 hover:ring-[#fae100] hover:ring-offset-1 hover:shadow-lg"
-                onClick={signinWithKakao}
+                // onClick={signinWithKakao}
               >
                 카카오 로그인
               </Button>

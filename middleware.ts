@@ -9,6 +9,12 @@ export async function middleware(request: NextRequest) {
   // 쿠키에서 로그인 사용자 정보 가져오기
   const userCookie = request.cookies.get("user");
   const user = userCookie ? JSON.parse(userCookie.value) : null;
+  console.log("User Cookie:", user);
+
+  // // 로그인 상태에서 로그인 페이지에 접근 차단
+  if (user && request.nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL("/board", request.url));
+  }
 
   // 비로그인 상태에서 보호된 경로 접근 차단
   if (!user && pathname.startsWith("/board")) {
