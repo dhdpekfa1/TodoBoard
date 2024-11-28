@@ -15,12 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { BoardContentType, BoardDataType } from "@/app/types/board";
 import { DateRangePicker } from "@/components/common";
 import { MarkdownComponent } from "./";
-import {
-  useDeleteBoard,
-  useGetContent,
-  useAddContent,
-  useUpdateContent,
-} from "@/hooks/api";
+import { useDeleteBoard, useGetContent, useUpdateContent } from "@/hooks/api";
 
 interface CardBoardProps {
   data: BoardDataType;
@@ -44,7 +39,6 @@ const CardBoard = ({ data, onUpdate }: CardBoardProps) => {
   const { toast } = useToast();
 
   const { contentData, fetchContent } = useGetContent();
-  const createContent = useAddContent();
   const { updateContent } = useUpdateContent();
   const onDeleteBoard = useDeleteBoard();
 
