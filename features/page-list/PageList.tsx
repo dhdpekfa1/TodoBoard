@@ -59,42 +59,44 @@ const PageList = () => {
 
   return (
     <aside className="page__aside">
-      <SearchBar
-        placeholder="검색어를 입력하세요."
-        value={searchValue || ""}
-        onChange={(e) => setSearchValue(e.target.value)}
-      />
-      <ButtonOutline onClick={createPage}>Add New Page</ButtonOutline>
-      <div className="flex flex-col mt-4 gap-2">
-        <small className="text-sm font-medium leading-none text-[#a6a6a6]">
-          {user?.nickname ? user.nickname : "user"}'s Todo Board
-        </small>
-        <ul className="flex flex-col gap-1">
-          {filteredPageData && filteredPageData.length > 0 ? (
-            filteredPageData.map((data) => (
-              <li
-                key={data.id}
-                onClick={() => handlePageClick(data.id)}
-                className={`${
-                  data.id === Number(id) ? "bg-[#efefef]" : "bg-[#fbfbfd]"
-                } min-h-9 flex items-center gap-2 py-2 px-[10px] rounded-sm text-sm cursor-pointer`}
-              >
-                <div className="bg-[#00f38d] w-2 h-2 rounded-full" />
-                {data.title && data.title.length > 12
-                  ? `${data.title.slice(0, 13)}...`
-                  : data.title}
-                {!data.title && "등록된 제목이 없습니다."}
+      <div className="flex flex-col h-full gap-3">
+        <SearchBar
+          placeholder="검색어를 입력하세요."
+          value={searchValue || ""}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <ButtonOutline onClick={createPage}>Add New Page</ButtonOutline>
+        <div className="flex flex-col mt-4 gap-2">
+          <small className="text-sm font-medium leading-none text-[#a6a6a6]">
+            {user?.nickname ? user.nickname : "user"}'s Todo Board
+          </small>
+          <ul className="flex flex-col gap-1">
+            {filteredPageData && filteredPageData.length > 0 ? (
+              filteredPageData.map((data) => (
+                <li
+                  key={data.id}
+                  onClick={() => handlePageClick(data.id)}
+                  className={`${
+                    data.id === Number(id) ? "bg-[#efefef]" : "bg-[#fbfbfd]"
+                  } min-h-9 flex items-center gap-2 py-2 px-[10px] rounded-sm text-sm cursor-pointer`}
+                >
+                  <div className="bg-[#00f38d] w-2 h-2 rounded-full" />
+                  {data.title && data.title.length > 12
+                    ? `${data.title.slice(0, 13)}...`
+                    : data.title}
+                  {!data.title && "등록된 제목이 없습니다."}
+                </li>
+              ))
+            ) : (
+              <li className="py-2 px-[10px] text-sm text-[#a6a6a6]">
+                등록된 페이지가 없습니다.
               </li>
-            ))
-          ) : (
-            <li className="py-2 px-[10px] text-sm text-[#a6a6a6]">
-              등록된 페이지가 없습니다.
-            </li>
-          )}
-        </ul>
-      </div>
+            )}
+          </ul>
+        </div>
 
-      <NavUser user={user} />
+        <NavUser user={user} />
+      </div>
     </aside>
   );
 };

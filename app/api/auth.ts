@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 
-// 카카오 로그인
+// TODO: 카카오 로그인 안되는 이슈 확인 필요
 export const signInWithKakao = async () => {
   const supabase = createClient();
   try {
