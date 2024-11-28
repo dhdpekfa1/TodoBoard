@@ -77,7 +77,7 @@ const PasswordSetting = () => {
       toast({
         variant: "destructive",
         title: "비밀번호 재설정에 실패했습니다.",
-        description: err,
+        description: "다시 시도해주세요.",
       });
     }
   };
