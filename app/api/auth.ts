@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 
+// 카카오 로그인
 export const signInWithKakao = async () => {
   const supabase = createClient();
   try {

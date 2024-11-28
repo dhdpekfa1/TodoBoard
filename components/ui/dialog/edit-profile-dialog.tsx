@@ -18,6 +18,7 @@ import {
   Input,
   Label,
 } from "@/components/ui";
+import DeleteUserDialog from "./delete-user-dialog";
 
 const EditProfileDialog = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useAtom(userAtom);
@@ -121,15 +122,18 @@ const EditProfileDialog = ({ children }: { children: React.ReactNode }) => {
             />
           </div>
         </div>
-        <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
-          <AlertDialogAction
-            className="text-white bg-[#517157] hover:bg-[#415c47] hover:ring-offset-1 active:bg-[#38503d] hover:shadow-lg"
-            onClick={updateUserInfo}
-          >
-            저장
-          </AlertDialogAction>
-        </AlertDialogFooter>
+        <div className="flex justify-between">
+          <DeleteUserDialog />
+          <div className="flex gap-2">
+            <AlertDialogCancel>취소</AlertDialogCancel>
+            <AlertDialogAction
+              className="text-white bg-[#517157] hover:bg-[#415c47] hover:ring-offset-1 active:bg-[#38503d] hover:shadow-lg"
+              onClick={updateUserInfo}
+            >
+              저장
+            </AlertDialogAction>
+          </div>
+        </div>
       </AlertDialogContent>
     </AlertDialog>
   );
